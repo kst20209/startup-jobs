@@ -5,6 +5,7 @@ export interface Database {
         Row: {
           id: number
           company_name: string
+          company_name_detail: string
           job_title: string
           job_url: string
           position: string
@@ -14,6 +15,7 @@ export interface Database {
         Insert: {
           id?: number
           company_name: string
+          company_name_detail: string
           job_title: string
           job_url: string
           position: string
@@ -23,6 +25,7 @@ export interface Database {
         Update: {
           id?: number
           company_name?: string
+          company_name_detail?: string
           job_title?: string
           job_url?: string
           position?: string
