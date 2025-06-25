@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# crawl-scripts
+/src/scripts
+/scripts
+/src/types
