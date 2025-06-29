@@ -182,92 +182,112 @@ export default function JobPostList({ initialJobPosts }: JobPostListProps) {
         )}
       </div>
 
-      {/* 채용공고 목록 */}
-      <div className="space-y-6">
-        {jobPosts.map((post, index) => {
-          const themeColor = getThemeColor(post.company_name)
-          const logoPath = getCompanyLogo(post.company_name)
-          
-          return (
+      {/* 채용공고 카드 목록 */}
+      <div className="space-y-4">
+        {jobPosts.length === 0 && !loading ? (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
+            <div className="text-gray-400 mb-4">
+              <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2V6" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">채용공고가 없습니다</h3>
+            <p className="text-gray-500">새로운 채용공고가 등록되면 여기에 표시됩니다.</p>
+          </div>
+        ) : (
+          jobPosts.map((jobPost, index) => (
             <div
-              key={`${post.id}-${index}`}
-              className="backdrop-blur-xl bg-white/90 rounded-2xl shadow-lg border border-white/20 p-6 hover:shadow-xl transition-all duration-300"
+              key={jobPost.id}
+              ref={index === jobPosts.length - 1 ? observerRef : undefined}
             >
-              <div className="flex items-start space-x-4">
-                <div className="flex-shrink-0">
-                  {logoPath ? (
-                    <div className="w-12 h-12 bg-white/80 backdrop-blur-sm rounded-lg shadow-sm border border-white/30 flex items-center justify-center p-2">
-                      <Image 
-                        src={logoPath} 
-                        alt={`${post.company_name} 로고`} 
-                        width={32} 
-                        height={32} 
-                        className="object-contain"
-                      />
+              <a
+                href={jobPost.job_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-gray-300 transition-all duration-200 group"
+              >
+                <div className="p-6">
+                  <div className="flex items-start space-x-4">
+                    {/* 회사 로고 */}
+                    <div className="flex-shrink-0">
+                      {(() => {
+                        const logoPath = getCompanyLogo(jobPost.company_name)
+                        return logoPath ? (
+                          <div className="w-12 h-12 bg-white rounded-lg shadow-sm border border-gray-200 flex items-center justify-center p-2">
+                            <Image 
+                              src={logoPath} 
+                              alt={`${jobPost.company_name} 로고`} 
+                              width={32} 
+                              height={32} 
+                              className="object-contain"
+                            />
+                          </div>
+                        ) : (
+                          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                            {jobPost.company_name.charAt(0).toUpperCase()}
+                          </div>
+                        )
+                      })()}
                     </div>
-                  ) : (
-                    <div 
-                      className="w-12 h-12 rounded-lg flex items-center justify-center text-white font-bold shadow-lg"
-                      style={{ backgroundColor: themeColor }}
-                    >
-                      {post.company_name.charAt(0)}
-                    </div>
-                  )}
-                </div>
-                
-                <div className="flex-1 min-w-0">
-                  <div className="flex flex-wrap items-center gap-2 mb-2">
-                    <span 
-                      className="px-3 py-1 rounded-full text-sm font-medium text-white shadow-sm"
-                      style={{ backgroundColor: themeColor }}
-                    >
-                      {post.company_name}
-                    </span>
-                    {post.employment_type && (
-                      <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">
-                        {post.employment_type}
-                      </span>
-                    )}
-                  </div>
-                  
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    {post.job_title}
-                  </h3>
-                  
-                  <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-3">
+
+                    {/* 채용공고 정보 */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          {/* 회사 정보 */}
+                          <div className="mb-2">
+                            <h3 className="text-sm font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+                              {jobPost.company_name}
+                            </h3>
+                            {jobPost.company_name_detail && (
+                              <p className="text-xs text-gray-500 mt-1">
+                                {jobPost.company_name_detail}
+                              </p>
+                            )}
+                          </div>
+
+                          {/* 채용공고 제목 */}
+                          <h2 className="text-lg font-semibold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors line-clamp-2">
+                            {jobPost.job_title}
+                          </h2>
+
+                          {/* 태그들 */}
+                          <div className="flex flex-wrap gap-2">
+                            
+                            <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
                     <div className="flex items-center gap-1">
                       <span>💼</span>
-                      <span>{post.position}</span>
+                      <span>{jobPost.position}</span>
                     </div>
-                    {post.employment_type && (
+                    {jobPost.employment_type && (
                       <div className="flex items-center gap-1">
                         <span>📄</span>
-                        <span>{post.employment_type}</span>
+                        <span>{jobPost.employment_type}</span>
                       </div>
                     )}
                   </div>
-                  
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-500">
-                      {post.created_at ? new Date(post.created_at).toLocaleDateString('ko-KR') : '날짜 미상'}
-                    </span>
-                    {post.job_url && (
-                      <a
-                        href={post.job_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-4 py-2 rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md text-white hover:opacity-90"
-                        style={{ backgroundColor: themeColor }}
-                      >
-                        지원하기 →
-                      </a>
-                    )}
+                          </div>
+                        </div>
+
+                        {/* 화살표 아이콘 */}
+                        <div className="flex-shrink-0 ml-4">
+                          <svg 
+                            className="w-5 h-5 text-gray-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-200" 
+                            fill="none" 
+                            viewBox="0 0 24 24" 
+                            stroke="currentColor"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </a>
             </div>
-          )
-        })}
+          ))
+        )}
       </div>
 
       {/* 무한 스크롤 트리거 */}
