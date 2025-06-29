@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
 import { JobPost } from '@/types/database'
 import Image from 'next/image'
