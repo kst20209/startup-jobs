@@ -76,7 +76,14 @@ export default function JobPostList({ initialJobPosts }: JobPostListProps) {
       }
 
       if (newJobPosts && newJobPosts.length > 0) {
-        setJobPosts(prev => [...prev, ...newJobPosts])
+        setJobPosts(prev => {
+          // 기존 데이터와 새 데이터를 합친 후 중복 제거
+          const combined = [...prev, ...newJobPosts]
+          const uniqueJobPosts = combined.filter((post, index, array) => 
+            array.findIndex(p => p.id === post.id) === index
+          )
+          return uniqueJobPosts
+        })
         setHasMore(newJobPosts.length === ITEMS_PER_PAGE)
       } else {
         setHasMore(false)
@@ -94,7 +101,7 @@ export default function JobPostList({ initialJobPosts }: JobPostListProps) {
     if (observer.current) observer.current.disconnect()
     
     observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) {
+      if (entries[0].isIntersecting && hasMore && !loading) {
         const nextPage = page
         setPage(prev => prev + 1)
         fetchJobPosts(nextPage)
