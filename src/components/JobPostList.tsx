@@ -61,7 +61,11 @@ export default function JobPostList({ initialJobPosts }: JobPostListProps) {
   // URL 변경 시 초기 데이터 재설정
   useEffect(() => {
     console.log(`🔄 URL 변경됨: ${selectedCompany}, 초기 데이터: ${initialJobPosts.length}개`)
-    setJobPosts(initialJobPosts)
+    // 초기 데이터도 중복 제거
+    const uniqueInitialPosts = initialJobPosts.filter((post, index, self) => 
+      index === self.findIndex(p => p.id === post.id)
+    )
+    setJobPosts(uniqueInitialPosts)
     setHasMore(initialJobPosts.length >= 20)
     setError(null)
   }, [selectedCompany, initialJobPosts])
@@ -99,7 +103,11 @@ export default function JobPostList({ initialJobPosts }: JobPostListProps) {
       console.log(`📊 추가로 가져온 데이터: ${newJobPosts?.length || 0}개`)
 
       if (newJobPosts && newJobPosts.length > 0) {
-        setJobPosts(prev => [...prev, ...newJobPosts])
+        // 중복 제거: 기존에 없는 ID만 추가
+        const existingIds = new Set(jobPosts.map(post => post.id))
+        const uniqueNewPosts = newJobPosts.filter(post => !existingIds.has(post.id))
+        
+        setJobPosts(prev => [...prev, ...uniqueNewPosts])
         setHasMore(newJobPosts.length === 20)
       } else {
         setHasMore(false)
