@@ -127,7 +127,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               최신 스타트업 채용 정보를 한눈에 확인하세요
               {selectedCompany !== '전체' && (
                 <span className="block mt-1 text-sm text-blue-600">
-                  현재 "{selectedCompany}" 채용공고만 표시 중
+                  현재 &quot;{selectedCompany}&quot; 채용공고만 표시 중
                 </span>
               )}
             </p>

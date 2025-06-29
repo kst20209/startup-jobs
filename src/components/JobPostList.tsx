@@ -119,7 +119,7 @@ export default function JobPostList({ initialJobPosts }: JobPostListProps) {
     } finally {
       setLoading(false)
     }
-  }, [jobPosts.length, selectedCompany, loading, hasMore])
+  }, [jobPosts.length, selectedCompany, loading, hasMore, jobPosts])
 
   // Intersection Observer
   useEffect(() => {
@@ -139,9 +139,7 @@ export default function JobPostList({ initialJobPosts }: JobPostListProps) {
     return () => observer.disconnect()
   }, [loadMoreJobPosts, loading, hasMore])
 
-  const getThemeColor = (companyName: string) => {
-    return COMPANY_COLORS[companyName] || '#5D5DF6'
-  }
+
 
   const getCompanyLogo = (companyName: string) => {
     return COMPANY_LOGOS[companyName] || null
