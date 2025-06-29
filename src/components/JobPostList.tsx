@@ -6,24 +6,7 @@ import { supabase } from '@/lib/supabase'
 import { JobPost } from '@/types/database'
 import Image from 'next/image'
 
-// 기업별 색상 매핑 (실제 DB company_name에 맞춤)
-const COMPANY_COLORS: { [key: string]: string } = {
-  '네이버 (Naver)': '#03C75A',
-  '카카오 (Kakao)': '#FFDC00', 
-  '쿠팡 (Coupang)': '#F7552F',
-  '라인 (LINE)': '#3ACD01',
-  '우아한형제들 (Woowahan)': '#40BFB9',
-  '당근 (Carrot)': '#FF6F0F',
-  '토스 (Toss)': '#0064FF',
-  // 단순 이름도 지원 (fallback)
-  '네이버': '#03C75A',
-  '카카오': '#FFDC00', 
-  '쿠팡': '#F7552F',
-  '라인': '#3ACD01',
-  '배민': '#40BFB9',
-  '당근': '#FF6F0F',
-  '토스': '#0064FF'
-}
+
 
 // 기업 로고 매핑 (실제 DB company_name에 맞춤)
 const COMPANY_LOGOS: { [key: string]: string } = {
@@ -119,7 +102,7 @@ export default function JobPostList({ initialJobPosts }: JobPostListProps) {
     } finally {
       setLoading(false)
     }
-  }, [jobPosts.length, selectedCompany, loading, hasMore, jobPosts])
+  }, [selectedCompany, loading, hasMore, jobPosts])
 
   // Intersection Observer
   useEffect(() => {
