@@ -151,7 +151,7 @@ export default async function HomePage() {
                       maxWidth: corp.logoStyle !== 'no-bg' ? '100%' : 'none',
                       maxHeight: corp.logoStyle !== 'no-bg' ? '100%' : 'none',
                       transform: corp.name === '토스' ? 'scale(0.8)' : 
-                                corp.name === '배민' ? 'scale(1.25)' : 
+                                corp.name === '배민' ? 'scale(1.5)' : 
                                 corp.name === '쿠팡' ? 'scale(1.25)' : 'none'
                     }}
                   />
