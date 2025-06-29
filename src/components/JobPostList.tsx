@@ -175,10 +175,6 @@ export default function JobPostList({ initialJobPosts }: JobPostListProps) {
     <div>
       {/* 현재 상태 표시 */}
       <div className="mb-4 flex justify-between items-center">
-        <div className="text-sm text-gray-600">
-          총 {jobPosts.length}개의 채용공고
-          {selectedCompany !== '전체' && ` (${selectedCompany})`}
-        </div>
         {loading && (
           <div className="text-sm text-blue-600">
             📡 로딩 중...

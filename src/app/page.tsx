@@ -166,16 +166,6 @@ export default async function HomePage({ searchParams }: HomePageProps) {
           </div>
         </div>
 
-        {/* 선택된 기업 정보 표시 */}
-        {selectedCompany !== '전체' && (
-          <div className="mb-4 text-center">
-            <div className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-blue-50 border border-blue-200 text-blue-800">
-              <span className="mr-2">🏢</span>
-              "{selectedCompany}" 채용공고 {initialJobPosts.length}개 (서버에서 필터링됨)
-            </div>
-          </div>
-        )}
-
         {/* 채용공고 목록 컴포넌트 - 클라이언트 컴포넌트 */}
         <Suspense fallback={
           <div className="space-y-4">
