@@ -3,8 +3,48 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
 import { JobPost } from '@/types/database'
+import Image from 'next/image'
 
 const ITEMS_PER_PAGE = 10
+
+// 회사 로고 매핑 함수
+const getCompanyLogo = (companyName: string): string | null => {
+  const logoMap: { [key: string]: string } = {
+    '네이버': '/logos/naver.svg',
+    'NAVER': '/logos/naver.svg',
+    '카카오': '/logos/kakao.svg',
+    'Kakao': '/logos/kakao.svg',
+    'KAKAO': '/logos/kakao.svg',
+    '쿠팡': '/logos/coupang.svg',
+    'Coupang': '/logos/coupang.svg',
+    '라인': '/logos/line.svg',
+    'LINE': '/logos/line.svg',
+    'Line': '/logos/line.svg',
+    '배달의민족': '/logos/baemin.svg',
+    '배민': '/logos/baemin.svg',
+    'Baemin': '/logos/baemin.svg',
+    '우아한형제들': '/logos/baemin.svg',
+    '당근마켓': '/logos/daangn.svg',
+    '당근': '/logos/daangn.svg',
+    'Daangn': '/logos/daangn.svg',
+    '토스': '/logos/toss.svg',
+    'Toss': '/logos/toss.svg',
+  }
+  
+  // 정확한 매치 확인
+  if (logoMap[companyName]) {
+    return logoMap[companyName]
+  }
+  
+  // 부분 매치 확인 (회사명에 키워드가 포함된 경우)
+  for (const [key, value] of Object.entries(logoMap)) {
+    if (companyName.includes(key) || key.includes(companyName)) {
+      return value
+    }
+  }
+  
+  return null
+}
 
 interface JobPostListProps {
   initialJobPosts: JobPost[]
@@ -94,9 +134,24 @@ export default function JobPostList({ initialJobPosts }: JobPostListProps) {
                   <div className="flex items-start space-x-4">
                     {/* 회사 로고 */}
                     <div className="flex-shrink-0">
-                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
-                        {jobPost.company_name.charAt(0).toUpperCase()}
-                      </div>
+                      {(() => {
+                        const logoPath = getCompanyLogo(jobPost.company_name)
+                        return logoPath ? (
+                          <div className="w-12 h-12 bg-white rounded-lg shadow-sm border border-gray-200 flex items-center justify-center p-2">
+                            <Image 
+                              src={logoPath} 
+                              alt={`${jobPost.company_name} 로고`} 
+                              width={32} 
+                              height={32} 
+                              className="object-contain"
+                            />
+                          </div>
+                        ) : (
+                          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                            {jobPost.company_name.charAt(0).toUpperCase()}
+                          </div>
+                        )
+                      })()}
                     </div>
 
                     {/* 채용공고 정보 */}
