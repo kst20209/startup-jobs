@@ -14,7 +14,8 @@ const corporations = [
     logo: '/logos/naver.svg',
     logoStyle: 'no-bg' as const,
     logoSize: { width: 48, height: 48 },
-    objectFit: 'contain' as const
+    objectFit: 'contain' as const,
+    scale: 1.2 // 기본 크기
   },
   { 
     name: '카카오', 
@@ -22,7 +23,8 @@ const corporations = [
     logo: '/logos/kakao.svg',
     logoStyle: 'no-bg' as const,
     logoSize: { width: 48, height: 48 },
-    objectFit: 'contain' as const
+    objectFit: 'contain' as const,
+    scale: 1.0 // 기본 크기
   },
   { 
     name: '쿠팡', 
@@ -30,7 +32,8 @@ const corporations = [
     logo: '/logos/coupang.svg',
     logoStyle: 'with-bg' as const,
     logoSize: { width: 36, height: 20 },
-    objectFit: 'contain' as const
+    objectFit: 'contain' as const,
+    scale: 1.5 // 좀 더 크게
   },
   { 
     name: '라인', 
@@ -38,7 +41,8 @@ const corporations = [
     logo: '/logos/line.svg',
     logoStyle: 'no-bg' as const,
     logoSize: { width: 48, height: 48 },
-    objectFit: 'contain' as const
+    objectFit: 'contain' as const,
+    scale: 1.5 // 기본 크기
   },
   { 
     name: '배민', 
@@ -46,7 +50,8 @@ const corporations = [
     logo: '/logos/baemin.svg',
     logoStyle: 'no-bg' as const,
     logoSize: { width: 40, height: 24 },
-    objectFit: 'contain' as const
+    objectFit: 'contain' as const,
+    scale: 1.0 // 더 크게 (가로로 긴 로고)
   },
   { 
     name: '당근', 
@@ -54,7 +59,8 @@ const corporations = [
     logo: '/logos/daangn.svg',
     logoStyle: 'with-bg-circle' as const,
     logoSize: { width: 40, height: 40 },
-    objectFit: 'cover' as const
+    objectFit: 'cover' as const,
+    scale: 1.3 // 좀 더 작게 (원형 배경에 맞춤)
   },
   { 
     name: '토스', 
@@ -62,7 +68,8 @@ const corporations = [
     logo: '/logos/toss.svg',
     logoStyle: 'with-bg-circle' as const,
     logoSize: { width: 48, height: 48 },
-    objectFit: 'cover' as const
+    objectFit: 'cover' as const,
+    scale: 0.9 // 좀 더 작게 (원형 배경에 맞춤)
   },
 ]
 

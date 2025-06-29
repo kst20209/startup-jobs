@@ -22,6 +22,7 @@ interface CompanyButtonProps {
     logoStyle: 'no-bg' | 'with-bg' | 'with-bg-circle'
     logoSize: { width: number; height: number }
     objectFit: 'contain' | 'cover'
+    scale: number
   }
 }
 
@@ -60,35 +61,47 @@ export default function CompanyButton({ company }: CompanyButtonProps) {
     >
       <div className="w-full h-full flex items-center justify-center p-2">
         {company.logoStyle === 'no-bg' ? (
-          <Image
-            src={company.logo}
-            alt={`${company.name} 로고`}
-            width={company.logoSize.width}
-            height={company.logoSize.height}
+          <div 
             className="transition-transform duration-300 group-hover:scale-110"
-            style={{ objectFit: company.objectFit }}
-          />
-        ) : company.logoStyle === 'with-bg' ? (
-          <div className="bg-white rounded-lg p-2 w-full h-full flex items-center justify-center">
+            style={{ transform: `scale(${company.scale})` }}
+          >
             <Image
               src={company.logo}
               alt={`${company.name} 로고`}
               width={company.logoSize.width}
               height={company.logoSize.height}
-              className="transition-transform duration-300 group-hover:scale-110"
               style={{ objectFit: company.objectFit }}
             />
           </div>
+        ) : company.logoStyle === 'with-bg' ? (
+          <div className="bg-white rounded-lg p-2 w-full h-full flex items-center justify-center">
+            <div 
+              className="transition-transform duration-300 group-hover:scale-110"
+              style={{ transform: `scale(${company.scale})` }}
+            >
+              <Image
+                src={company.logo}
+                alt={`${company.name} 로고`}
+                width={company.logoSize.width}
+                height={company.logoSize.height}
+                style={{ objectFit: company.objectFit }}
+              />
+            </div>
+          </div>
         ) : (
           <div className="bg-white rounded-full w-full h-full flex items-center justify-center overflow-hidden">
-            <Image
-              src={company.logo}
-              alt={`${company.name} 로고`}
-              width={company.logoSize.width}
-              height={company.logoSize.height}
+            <div 
               className="transition-transform duration-300 group-hover:scale-110"
-              style={{ objectFit: company.objectFit }}
-            />
+              style={{ transform: `scale(${company.scale})` }}
+            >
+              <Image
+                src={company.logo}
+                alt={`${company.name} 로고`}
+                width={company.logoSize.width}
+                height={company.logoSize.height}
+                style={{ objectFit: company.objectFit }}
+              />
+            </div>
           </div>
         )}
       </div>
