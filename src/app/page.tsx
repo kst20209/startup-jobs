@@ -74,11 +74,12 @@ const corporations = [
 ]
 
 interface HomePageProps {
-  searchParams: { company?: string }
+  searchParams: Promise<{ company?: string }>
 }
 
 export default async function HomePage({ searchParams }: HomePageProps) {
-  const selectedCompany = searchParams.company || '전체'
+  const resolvedSearchParams = await searchParams
+  const selectedCompany = resolvedSearchParams.company || '전체'
   const initialJobPosts = await getInitialJobPosts(selectedCompany)
 
   return (
