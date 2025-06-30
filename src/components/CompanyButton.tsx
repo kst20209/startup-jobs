@@ -1,7 +1,8 @@
 'use client'
 
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import { companyStore } from './JobPostList'
 
 // 버튼 이름 → 실제 DB company_name 매핑
 const COMPANY_NAME_MAPPING: { [key: string]: string } = {
@@ -27,18 +28,24 @@ interface CompanyButtonProps {
 }
 
 export default function CompanyButton({ company }: CompanyButtonProps) {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const selectedCompany = searchParams.get('company')
+  const [selectedCompany, setSelectedCompany] = useState('전체')
+  
+  // 글로벌 상태 구독
+  useEffect(() => {
+    setSelectedCompany(companyStore.getSelectedCompany())
+    const unsubscribe = companyStore.subscribe(() => {
+      setSelectedCompany(companyStore.getSelectedCompany())
+    })
+    return unsubscribe
+  }, [])
   
   // 실제 DB의 company_name 가져오기
   const actualCompanyName = COMPANY_NAME_MAPPING[company.name] || company.name
   const isSelected = selectedCompany === actualCompanyName
 
   const handleClick = () => {
-    const params = new URLSearchParams(searchParams.toString())
-    params.set('company', actualCompanyName)
-    router.push(`?${params.toString()}`)
+    console.log(`🔄 기업 선택: ${company.name} → ${actualCompanyName}`)
+    companyStore.setSelectedCompany(actualCompanyName)
   }
 
   return (
@@ -116,15 +123,22 @@ export default function CompanyButton({ company }: CompanyButtonProps) {
 }
 
 export function AllCompaniesButton() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const selectedCompany = searchParams.get('company')
-  const isSelected = !selectedCompany || selectedCompany === '전체'
+  const [selectedCompany, setSelectedCompany] = useState('전체')
+  
+  // 글로벌 상태 구독
+  useEffect(() => {
+    setSelectedCompany(companyStore.getSelectedCompany())
+    const unsubscribe = companyStore.subscribe(() => {
+      setSelectedCompany(companyStore.getSelectedCompany())
+    })
+    return unsubscribe
+  }, [])
+  
+  const isSelected = selectedCompany === '전체'
 
   const handleClick = () => {
-    const params = new URLSearchParams(searchParams.toString())
-    params.delete('company')
-    router.push(`?${params.toString()}`)
+    console.log('🔄 전체 선택')
+    companyStore.setSelectedCompany('전체')
   }
 
   return (

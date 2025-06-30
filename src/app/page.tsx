@@ -6,6 +6,9 @@ import CompanyButton, { AllCompaniesButton } from '@/components/CompanyButton'
 import JobPostList from '@/components/JobPostList'
 import Image from 'next/image'
 
+// 24시간마다 revalidate (하루 한 번 데이터 업데이트)
+export const revalidate = 86400
+
 // 기업 정보 (서버에서 정의)
 const corporations = [
   { 
@@ -73,14 +76,9 @@ const corporations = [
   },
 ]
 
-interface HomePageProps {
-  searchParams: Promise<{ company?: string }>
-}
-
-export default async function HomePage({ searchParams }: HomePageProps) {
-  const resolvedSearchParams = await searchParams
-  const selectedCompany = resolvedSearchParams.company || '전체'
-  const initialJobPosts = await getInitialJobPosts(selectedCompany)
+export default async function HomePage() {
+  // 빌드 시점에 모든 채용공고 데이터 가져오기
+  const allJobPosts = await getAllJobPosts()
 
   return (
     <div className="min-h-screen relative">
@@ -126,11 +124,6 @@ export default async function HomePage({ searchParams }: HomePageProps) {
             </h1>
             <p className="text-gray-600 mb-6">
               최신 스타트업 채용 정보를 한눈에 확인하세요
-              {selectedCompany !== '전체' && (
-                <span className="block mt-1 text-sm text-blue-600">
-                  현재 &quot;{selectedCompany}&quot; 채용공고만 표시 중
-                </span>
-              )}
             </p>
             <div className="flex justify-center">
               <input
@@ -187,44 +180,39 @@ export default async function HomePage({ searchParams }: HomePageProps) {
             ))}
           </div>
         }>
-          <JobPostList initialJobPosts={initialJobPosts} />
+          <JobPostList allJobPosts={allJobPosts} />
         </Suspense>
       </main>
     </div>
   )
 }
 
-// 서버 컴포넌트에서 필터링된 초기 데이터 가져오기
-async function getInitialJobPosts(selectedCompany?: string): Promise<JobPost[]> {
+// 빌드 시점에 모든 채용공고 데이터 가져오기 (SSG)
+async function getAllJobPosts(): Promise<JobPost[]> {
   try {
-    let query = supabase
+    console.log('🚀 빌드 시점에 모든 채용공고 데이터 가져오는 중...')
+    
+    const { data: jobPosts, error } = await supabase
       .from('JobPost')
       .select('*')
       .order('created_at', { ascending: false })
 
-    // 선택된 기업이 있으면 서버에서 정확히 매칭
-    if (selectedCompany && selectedCompany !== '전체') {
-      query = query.eq('company_name', selectedCompany)
-      console.log(`🔍 서버에서 ${selectedCompany} 정확 매칭 필터링`)
-    }
-
-    const { data: jobPosts, error } = await query.limit(20)
-
     if (error) {
-      console.error('Error fetching job posts:', error)
+      console.error('Error fetching all job posts:', error)
       return []
     }
 
+    console.log(`✅ 총 ${jobPosts?.length || 0}개의 채용공고를 빌드 시점에 가져왔습니다`)
+    
     // 디버깅: 실제 데이터베이스의 모든 company_name 출력
     if (jobPosts && jobPosts.length > 0) {
       const uniqueCompanies = [...new Set(jobPosts.map(post => post.company_name))].sort()
-      console.log('🏢 실제 DB에 있는 company_name들:', uniqueCompanies)
+      console.log('🏢 DB에 있는 모든 company_name들:', uniqueCompanies)
     }
 
-    console.log(`📊 서버에서 가져온 데이터: ${jobPosts?.length || 0}개`)
     return jobPosts || []
   } catch (error) {
-    console.error('Server fetch error:', error)
+    console.error('Build time fetch error:', error)
     return []
   }
 }
