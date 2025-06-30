@@ -1,7 +1,7 @@
 'use client'
 
-import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { companyStore } from './JobPostList'
 
 // 기업별 색상 매핑 (실제 DB company_name에 맞춤)
 const COMPANY_COLORS: { [key: string]: { bg: string; overlay1: string; overlay2: string; overlay3: string } } = {
@@ -101,12 +101,21 @@ const COMPANY_COLORS: { [key: string]: { bg: string; overlay1: string; overlay2:
 }
 
 export default function DynamicBackground() {
-  const searchParams = useSearchParams()
-  const selectedCompany = searchParams.get('company') || '전체'
+  const [selectedCompany, setSelectedCompany] = useState('전체')
   const [isClient, setIsClient] = useState(false)
 
+  // 글로벌 상태 구독
   useEffect(() => {
     setIsClient(true)
+    setSelectedCompany(companyStore.getSelectedCompany())
+    
+    const unsubscribe = companyStore.subscribe(() => {
+      const newCompany = companyStore.getSelectedCompany()
+      setSelectedCompany(newCompany)
+      console.log(`🎨 배경 색상 변경: ${newCompany}`)
+    })
+    
+    return unsubscribe
   }, [])
 
   if (!isClient) {
@@ -115,8 +124,6 @@ export default function DynamicBackground() {
 
   // 선택된 회사에 맞는 색상 가져오기 (fallback 포함)
   const colors = COMPANY_COLORS[selectedCompany] || COMPANY_COLORS['전체']
-
-  console.log(`🎨 배경 색상 변경: ${selectedCompany}`, colors)
 
   return (
     <div 

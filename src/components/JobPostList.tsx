@@ -129,11 +129,6 @@ export default function JobPostList({ allJobPosts }: JobPostListProps) {
             ? `📊 전체 ${filteredJobPosts.length}개의 채용공고` 
             : `📊 ${selectedCompany} ${filteredJobPosts.length}개의 채용공고`
           }
-          {displayCount < filteredJobPosts.length && (
-            <span className="text-blue-600 ml-2">
-              (현재 {displayCount}개 표시 중)
-            </span>
-          )}
         </div>
       </div>
 
