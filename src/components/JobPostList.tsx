@@ -134,78 +134,97 @@ export default function JobPostList({ allJobPosts }: JobPostListProps) {
 
       {/* 채용공고 카드 목록 */}
       <div className="space-y-4">
-        {displayedJobPosts.map((jobPost) => (
-          <div key={jobPost.id}>
-            <a
-              href={jobPost.job_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-gray-300 transition-all duration-200 group"
-            >
-              <div className="p-6">
-                <div className="flex items-start space-x-4">
-                  {/* 회사 로고 */}
-                  <div className="flex-shrink-0 w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
-                    {getCompanyLogo(jobPost.company_name) ? (
-                      <Image
-                        src={getCompanyLogo(jobPost.company_name)!}
-                        alt={`${jobPost.company_name} 로고`}
-                        width={32}
-                        height={32}
-                        className="object-contain"
-                      />
-                    ) : (
-                      <div className="text-2xl">🏢</div>
-                    )}
-                  </div>
-
-                  {/* 채용공고 정보 */}
-                  <div className="flex-1 min-w-0">
-                    {/* 회사명 */}
-                    <div className="text-sm text-gray-500 mb-1 truncate">
-                      {jobPost.company_name}
+        {displayedJobPosts.length === 0 ? (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
+            <div className="text-gray-400 mb-4">
+              <svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2V6" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">채용공고가 없습니다</h3>
+            <p className="text-gray-500">새로운 채용공고가 등록되면 여기에 표시됩니다.</p>
+          </div>
+        ) : (
+          displayedJobPosts.map((jobPost) => (
+            <div key={jobPost.id}>
+              <a
+                href={jobPost.job_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-gray-300 transition-all duration-200 group"
+              >
+                <div className="p-6">
+                  <div className="flex items-start space-x-4">
+                    {/* 회사 로고 */}
+                    <div className="flex-shrink-0">
+                      {(() => {
+                        const logoPath = getCompanyLogo(jobPost.company_name)
+                        return logoPath ? (
+                          <div className="w-12 h-12 bg-white rounded-lg shadow-sm border border-gray-200 flex items-center justify-center p-2">
+                            <Image 
+                              src={logoPath} 
+                              alt={`${jobPost.company_name} 로고`} 
+                              width={32} 
+                              height={32} 
+                              className="object-contain"
+                            />
+                          </div>
+                        ) : (
+                          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                            {jobPost.company_name.charAt(0).toUpperCase()}
+                          </div>
+                        )
+                      })()}
                     </div>
 
-                    {/* 채용공고 제목 */}
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
-                      {jobPost.job_title}
-                    </h3>
+                    {/* 채용공고 정보 */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          {/* 회사명 */}
+                          <div className="text-sm text-gray-500 mb-1 truncate">
+                            {jobPost.company_name}
+                          </div>
 
-                    {/* 포지션 및 고용형태 */}
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {jobPost.position && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                          {jobPost.position}
-                        </span>
-                      )}
-                      {jobPost.employment_type && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          {jobPost.employment_type}
-                        </span>
-                      )}
+                          {/* 채용공고 제목 */}
+                          <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
+                            {jobPost.job_title}
+                          </h3>
+
+                          {/* 포지션 및 고용형태 */}
+                          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+                            <div className="flex items-center gap-1">
+                              <span>💼</span>
+                              <span>{jobPost.position}</span>
+                            </div>
+                            {jobPost.employment_type && (
+                              <div className="flex items-center gap-1">
+                                <span>📄</span>
+                                <span>{jobPost.employment_type}</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* 화살표 아이콘 */}
+                        <div className="flex-shrink-0 ml-4">
+                          <svg 
+                            className="w-5 h-5 text-gray-400 group-hover:text-blue-500 group-hover:translate-x-1 transition-all duration-200" 
+                            fill="none" 
+                            viewBox="0 0 24 24" 
+                            stroke="currentColor"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </div>
+                      </div>
                     </div>
-
-                    {/* 등록일 */}
-                    <div className="text-xs text-gray-400">
-                      {new Date(jobPost.created_at).toLocaleDateString('ko-KR', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })} 등록
-                    </div>
-                  </div>
-
-                  {/* 화살표 아이콘 */}
-                  <div className="flex-shrink-0 text-gray-400 group-hover:text-blue-600 transition-colors">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
                   </div>
                 </div>
-              </div>
-            </a>
-          </div>
-        ))}
+              </a>
+            </div>
+          ))
+        )}
 
         {/* 더 보기 버튼 */}
         {hasMore && (
