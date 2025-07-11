@@ -4,7 +4,7 @@ import { JobPost } from '@/types/database'
 import DynamicBackground from '@/components/DynamicBackground'
 import CompanyButton, { AllCompaniesButton } from '@/components/CompanyButton'
 import JobPostList from '@/components/JobPostList'
-import Image from 'next/image'
+import Header from '@/components/Header'
 
 // 24시간마다 revalidate (하루 한 번 데이터 업데이트)
 export const revalidate = 86400
@@ -87,33 +87,8 @@ export default async function HomePage() {
         <DynamicBackground />
       </Suspense>
 
-      {/* 헤더 - 서버 컴포넌트 (고정 색상 #5D5DF6) */}
-      <header className="w-full border-b backdrop-blur-md bg-white/80 sticky top-0 z-20 shadow-sm">
-        <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-2">
-          <div className="flex items-center gap-2">
-            <Image src="/globe.svg" alt="logo" width={32} height={32} />
-            <span className="font-extrabold text-xl tracking-tight text-gray-800">LETS CAREER</span>
-            <nav className="ml-8 flex gap-6 text-gray-700 text-base font-medium">
-              
-            </nav>
-          </div>
-          <div className="flex items-center gap-3">
-            <button 
-              className="font-medium transition-colors duration-200 text-[#5D5DF6] hover:text-[#4c4cf5]"
-            >
-              로그인
-            </button>
-            <button 
-              className="text-white px-4 py-1.5 rounded-lg font-semibold shadow hover:shadow-lg transition-all duration-200 bg-[#5D5DF6] hover:bg-[#4c4cf5]"
-              style={{ 
-                boxShadow: '0 4px 14px 0 rgba(93, 93, 246, 0.4)'
-              }}
-            >
-              회원가입
-            </button>
-          </div>
-        </div>
-      </header>
+      {/* 헤더 - 클라이언트 컴포넌트 (피드백 모달 포함) */}
+      <Header />
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
         {/* 메인 타이틀 및 검색창 카드 - 서버 컴포넌트 */}
