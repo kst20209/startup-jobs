@@ -91,7 +91,7 @@ export default function LiberalToggle() {
   }
 
   return (
-    <div className="mt-4">
+    <div className="mt-2">
       <div className="flex justify-center">
         <div className="w-full max-w-lg">
           <div className="flex gap-2">
