@@ -247,6 +247,19 @@ export default function JobPostList({ allJobPosts }: JobPostListProps) {
     return COMPANY_LOGOS[companyName] || null
   }
 
+  // 직무 카테고리 표시 함수 (스마트 처리)
+  const formatJobCategory = (main: string | null, sub: string | null): string => {
+    if (!main) return '' // main이 없으면 빈 문자열
+    
+    // sub가 없거나 빈 문자열이거나 main과 같으면 main만 표시
+    if (!sub || sub.trim() === '' || main === sub) {
+      return main
+    }
+    
+    // main과 sub가 다르면 점으로 연결해서 표시
+    return `${main} · ${sub}`
+  }
+
   if (filteredJobPosts.length === 0) {
     return (
       <div className="text-center py-12">
@@ -340,7 +353,7 @@ export default function JobPostList({ allJobPosts }: JobPostListProps) {
                           <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
                             <div className="flex items-center gap-1">
                               <span>💼</span>
-                              <span>{jobPost.job_category_main}</span>
+                              <span>{formatJobCategory(jobPost.job_category_main, jobPost.job_category_sub)}</span>
                             </div>
                             {jobPost.employment_type && (
                               <div className="flex items-center gap-1">
