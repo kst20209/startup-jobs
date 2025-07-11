@@ -6,6 +6,7 @@ import CompanyButton, { AllCompaniesButton } from '@/components/CompanyButton'
 import JobPostList from '@/components/JobPostList'
 import Header from '@/components/Header'
 import LiberalToggle from '@/components/LiberalToggle'
+import SearchInput from '@/components/SearchInput'
 
 // 24시간마다 revalidate (하루 한 번 데이터 업데이트)
 export const revalidate = 86400
@@ -102,12 +103,16 @@ export default async function HomePage() {
               최신 스타트업 채용 정보를 한눈에 확인하세요
             </p>
             <div className="flex justify-center">
-              <input
-                type="text"
-                placeholder="검색어를 입력하세요 (예: 프론트엔드, 네이버)"
-                className="w-full max-w-lg px-4 py-3 rounded-xl border border-gray-200/50 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#5D5DF6] focus:border-transparent transition text-base bg-white/70 backdrop-blur-sm placeholder-gray-400"
-                disabled
-              />
+              <Suspense fallback={
+                <input
+                  type="text"
+                  placeholder="검색어를 입력하세요..."
+                  className="w-full max-w-lg px-4 py-3 rounded-xl border border-gray-200/50 shadow-sm bg-white/70 backdrop-blur-sm placeholder-gray-400 animate-pulse"
+                  disabled
+                />
+              }>
+                <SearchInput />
+              </Suspense>
             </div>
             {/* 문과/이과 토글 버튼 */}
         <Suspense fallback={

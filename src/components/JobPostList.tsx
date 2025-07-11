@@ -42,7 +42,81 @@ interface JobPostListProps {
 let selectedCompanyGlobal = '전체'
 let liberalFilterGlobal: 'liberal' | 'science' | 'all' = 'liberal' // 문과가 기본값
 let employmentFilterGlobal: 'permanent' | 'contract' | 'all' = 'contract' // 계약직이 기본값
+let searchTermGlobal = '' // 검색어 상태 추가
 const listeners: Set<() => void> = new Set()
+
+// 유사어/동의어 딕셔너리 (핵심 개발 용어들)
+const SYNONYMS: { [key: string]: string[] } = {
+  '프론트엔드': ['프론트', 'FE', 'frontend', 'Front-end', '웹개발', '클라이언트'],
+  '백엔드': ['백', 'BE', 'backend', 'Back-end', '서버', '서버개발'],
+  '풀스택': ['풀스텍', 'full stack', 'fullstack', 'Full-stack', '전체개발'],
+  '개발': ['dev', 'development', '개발자', 'developer', '엔지니어', 'engineer'],
+  '디자인': ['디자이너', 'design', 'designer', 'UI', 'UX'],
+  '기획': ['기획자', 'PM', 'PO', 'product', '상품기획'],
+  '마케팅': ['마케터', 'marketing', '마케팅팀'],
+  '데이터': ['data', 'analyst', '분석', '데이터분석'],
+  'AI': ['인공지능', 'artificial intelligence', '머신러닝', 'ML', 'machine learning'],
+  '모바일': ['mobile', 'app', '앱', '안드로이드', 'android', 'iOS'],
+  '게임': ['game', '게임개발', '게임기획'],
+  '보안': ['security', '정보보안', '사이버보안'],
+  'QA': ['테스트', 'test', '품질관리', 'quality'],
+  'DevOps': ['데브옵스', '인프라', 'infrastructure', '운영'],
+  'CTO': ['기술이사', '기술임원'],
+  'HR': ['인사', '인사팀', 'human resources'],
+  'CS': ['고객지원', '고객상담', 'customer service'],
+  '영업': ['세일즈', 'sales', '비즈니스'],
+  '인턴': ['intern', '인턴십', 'internship'],
+  '신입': ['junior', '주니어', '신입사원'],
+  '경력': ['senior', '시니어', '경력직']
+}
+
+// 초성 추출 함수
+const getInitials = (text: string): string => {
+  const initials = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ']
+  return text.split('').map(char => {
+    const code = char.charCodeAt(0) - 44032
+    if (code >= 0 && code <= 11171) {
+      return initials[Math.floor(code / 588)]
+    }
+    return char
+  }).join('')
+}
+
+// 검색어 확장 함수 (유사어 포함)
+const expandSearchTerm = (searchTerm: string): string[] => {
+  const terms = [searchTerm.toLowerCase()]
+  
+  // 유사어 추가
+  Object.entries(SYNONYMS).forEach(([key, synonyms]) => {
+    if (key.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        synonyms.some(synonym => synonym.toLowerCase().includes(searchTerm.toLowerCase()))) {
+      terms.push(key.toLowerCase())
+      terms.push(...synonyms.map(s => s.toLowerCase()))
+    }
+  })
+  
+  return [...new Set(terms)] // 중복 제거
+}
+
+// 텍스트 검색 함수 (초성 + 유사어 지원)
+const searchInText = (text: string | null, searchTerms: string[]): boolean => {
+  if (!text) return false
+  
+  const lowerText = text.toLowerCase()
+  const initials = getInitials(text)
+  
+  return searchTerms.some(term => {
+    // 일반 텍스트 검색
+    if (lowerText.includes(term)) return true
+    
+    // 초성 검색 (검색어가 모두 초성인 경우)
+    if (/^[ㄱ-ㅎ]+$/.test(term)) {
+      return initials.includes(term)
+    }
+    
+    return false
+  })
+}
 
 export const companyStore = {
   getSelectedCompany: () => selectedCompanyGlobal,
@@ -60,6 +134,11 @@ export const companyStore = {
     employmentFilterGlobal = filter
     listeners.forEach(listener => listener())
   },
+  getSearchTerm: () => searchTermGlobal,
+  setSearchTerm: (term: string) => {
+    searchTermGlobal = term
+    listeners.forEach(listener => listener())
+  },
   subscribe: (listener: () => void) => {
     listeners.add(listener)
     return () => {
@@ -72,6 +151,7 @@ export default function JobPostList({ allJobPosts }: JobPostListProps) {
   const [selectedCompany, setSelectedCompany] = useState('전체')
   const [liberalFilter, setLiberalFilter] = useState<'liberal' | 'science' | 'all'>('liberal')
   const [employmentFilter, setEmploymentFilter] = useState<'permanent' | 'contract' | 'all'>('contract')
+  const [searchTerm, setSearchTerm] = useState('')
   const [displayCount, setDisplayCount] = useState(20)
 
   // 글로벌 상태 구독
@@ -80,6 +160,7 @@ export default function JobPostList({ allJobPosts }: JobPostListProps) {
       setSelectedCompany(companyStore.getSelectedCompany())
       setLiberalFilter(companyStore.getLiberalFilter())
       setEmploymentFilter(companyStore.getEmploymentFilter())
+      setSearchTerm(companyStore.getSearchTerm())
       setDisplayCount(20) // 필터 변경 시 표시 개수 초기화
     })
     return () => unsubscribe()
@@ -108,7 +189,7 @@ export default function JobPostList({ allJobPosts }: JobPostListProps) {
 
   // 필터링된 채용공고 (즉시 계산)
   const filteredJobPosts = useMemo(() => {
-    console.log(`🔍 클라이언트에서 필터링: ${selectedCompany}, 문과/이과: ${liberalFilter}, 고용형태: ${employmentFilter}`)
+    console.log(`🔍 클라이언트에서 필터링: ${selectedCompany}, 문과/이과: ${liberalFilter}, 고용형태: ${employmentFilter}, 검색어: "${searchTerm}"`)
     
     let filtered = allJobPosts
 
@@ -133,10 +214,21 @@ export default function JobPostList({ allJobPosts }: JobPostListProps) {
       filtered = filtered.filter(post => getEmploymentCategory(post.employment_type) === 'contract')
     }
     // 'all'인 경우는 모든 결과 표시 (추가 필터링 없음)
+
+    // 4. 검색어 필터링 (스마트 검색)
+    if (searchTerm.trim()) {
+      const expandedTerms = expandSearchTerm(searchTerm.trim())
+      filtered = filtered.filter(post => {
+        return searchInText(post.job_title, expandedTerms) || 
+               searchInText(post.company_name, expandedTerms) ||
+               searchInText(post.job_category_main, expandedTerms) ||
+               searchInText(post.job_category_sub, expandedTerms)
+      })
+    }
     
     console.log(`📊 필터링 결과: ${filtered.length}개 (전체: ${allJobPosts.length}개)`)
     return filtered
-  }, [allJobPosts, selectedCompany, liberalFilter, employmentFilter])
+  }, [allJobPosts, selectedCompany, liberalFilter, employmentFilter, searchTerm])
 
   // 현재 표시할 채용공고 (무한 스크롤용)
   const displayedJobPosts = useMemo(() => {
