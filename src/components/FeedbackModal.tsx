@@ -75,14 +75,17 @@ export default function FeedbackModal({ isOpen, onClose }: FeedbackModalProps) {
 
   return (
     <div 
-      className="fixed inset-0 bg-black bg-opacity-10 flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 bg-gray-500/25 flex items-center justify-center z-50 p-4"
       onClick={handleClose}
       onKeyDown={handleKeyDown}
       tabIndex={-1}
     >
       <div 
-        className="bg-white rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+        className="bg-white rounded-xl shadow-lg max-w-md w-full max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
+        style={{ 
+          boxShadow: '0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)' 
+        }}
       >
         {/* 헤더 */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
