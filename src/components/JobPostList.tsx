@@ -183,7 +183,7 @@ export default function JobPostList({ allJobPosts }: JobPostListProps) {
                         <div className="flex-1">
                           {/* 회사명 */}
                           <div className="text-sm text-gray-500 mb-1 truncate">
-                            {jobPost.company_name}
+                            {jobPost.company_name} · {jobPost.company_name_detail || jobPost.company_name}
                           </div>
 
                           {/* 채용공고 제목 */}
