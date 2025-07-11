@@ -5,6 +5,7 @@ import DynamicBackground from '@/components/DynamicBackground'
 import CompanyButton, { AllCompaniesButton } from '@/components/CompanyButton'
 import JobPostList from '@/components/JobPostList'
 import Header from '@/components/Header'
+import LiberalToggle from '@/components/LiberalToggle'
 
 // 24시간마다 revalidate (하루 한 번 데이터 업데이트)
 export const revalidate = 86400
@@ -108,6 +109,14 @@ export default async function HomePage() {
                 disabled
               />
             </div>
+            {/* 문과/이과 토글 버튼 */}
+        <Suspense fallback={
+          <div className="flex justify-center mb-6">
+            <div className="w-24 h-12 rounded-xl bg-gray-300 animate-pulse" />
+          </div>
+        }>
+          <LiberalToggle />
+        </Suspense>
           </div>
         </div>
 

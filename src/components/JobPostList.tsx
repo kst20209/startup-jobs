@@ -40,12 +40,18 @@ interface JobPostListProps {
 
 // 글로벌 상태 (간단한 상태 관리)
 let selectedCompanyGlobal = '전체'
+let liberalFilterGlobal: 'liberal' | 'science' | 'all' = 'liberal' // 문과가 기본값
 const listeners: Set<() => void> = new Set()
 
 export const companyStore = {
   getSelectedCompany: () => selectedCompanyGlobal,
   setSelectedCompany: (company: string) => {
     selectedCompanyGlobal = company
+    listeners.forEach(listener => listener())
+  },
+  getLiberalFilter: () => liberalFilterGlobal,
+  setLiberalFilter: (filter: 'liberal' | 'science' | 'all') => {
+    liberalFilterGlobal = filter
     listeners.forEach(listener => listener())
   },
   subscribe: (listener: () => void) => {
@@ -58,12 +64,14 @@ export const companyStore = {
 
 export default function JobPostList({ allJobPosts }: JobPostListProps) {
   const [selectedCompany, setSelectedCompany] = useState('전체')
+  const [liberalFilter, setLiberalFilter] = useState<'liberal' | 'science' | 'all'>('liberal')
   const [displayCount, setDisplayCount] = useState(20)
 
   // 글로벌 상태 구독
   useEffect(() => {
     const unsubscribe = companyStore.subscribe(() => {
       setSelectedCompany(companyStore.getSelectedCompany())
+      setLiberalFilter(companyStore.getLiberalFilter())
       setDisplayCount(20) // 필터 변경 시 표시 개수 초기화
     })
     return () => unsubscribe()
@@ -71,19 +79,27 @@ export default function JobPostList({ allJobPosts }: JobPostListProps) {
 
   // 필터링된 채용공고 (즉시 계산)
   const filteredJobPosts = useMemo(() => {
-    console.log(`🔍 클라이언트에서 필터링: ${selectedCompany}`)
+    console.log(`🔍 클라이언트에서 필터링: ${selectedCompany}, 문과/이과: ${liberalFilter}`)
     
-    if (selectedCompany === '전체') {
-      return allJobPosts
+    let filtered = allJobPosts
+
+    // 1. 회사 필터링
+    if (selectedCompany !== '전체') {
+      const actualCompanyName = COMPANY_NAME_MAPPING[selectedCompany] || selectedCompany
+      filtered = filtered.filter(post => post.company_name === actualCompanyName)
     }
 
-    // 실제 DB company_name으로 매핑
-    const actualCompanyName = COMPANY_NAME_MAPPING[selectedCompany] || selectedCompany
-    const filtered = allJobPosts.filter(post => post.company_name === actualCompanyName)
+    // 2. 문과/이과 필터링
+    if (liberalFilter === 'liberal') {
+      filtered = filtered.filter(post => post.is_liberal === true)
+    } else if (liberalFilter === 'science') {
+      filtered = filtered.filter(post => post.is_liberal === false)
+    }
+    // 'all'인 경우는 모든 결과 표시 (추가 필터링 없음)
     
     console.log(`📊 필터링 결과: ${filtered.length}개 (전체: ${allJobPosts.length}개)`)
     return filtered
-  }, [allJobPosts, selectedCompany])
+  }, [allJobPosts, selectedCompany, liberalFilter])
 
   // 현재 표시할 채용공고 (무한 스크롤용)
   const displayedJobPosts = useMemo(() => {
@@ -191,11 +207,11 @@ export default function JobPostList({ allJobPosts }: JobPostListProps) {
                             {jobPost.job_title}
                           </h3>
 
-                          {/* 포지션 및 고용형태 */}
+                          {/* 직무 카테고리 및 고용형태 */}
                           <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
                             <div className="flex items-center gap-1">
                               <span>💼</span>
-                              <span>{jobPost.position}</span>
+                              <span>{jobPost.job_category_main}</span>
                             </div>
                             {jobPost.employment_type && (
                               <div className="flex items-center gap-1">

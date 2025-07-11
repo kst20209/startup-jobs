@@ -8,8 +8,17 @@ export interface Database {
           company_name_detail: string
           job_title: string
           job_url: string
-          position: string
+          job_category_main: string
+          job_category_sub: string
           employment_type: string
+          location: string
+          deadline_date: string | null
+          job_description: string | null
+          requirements: string | null
+          preferred_qualifications: string | null
+          raw_id: number | null
+          contract_duration: string | null
+          is_liberal: boolean
           created_at: string
         }
         Insert: {
@@ -18,8 +27,17 @@ export interface Database {
           company_name_detail: string
           job_title: string
           job_url: string
-          position: string
+          job_category_main: string
+          job_category_sub: string
           employment_type: string
+          location: string
+          deadline_date?: string | null
+          job_description?: string | null
+          requirements?: string | null
+          preferred_qualifications?: string | null
+          raw_id?: number | null
+          contract_duration?: string | null
+          is_liberal?: boolean
           created_at?: string
         }
         Update: {
@@ -28,8 +46,17 @@ export interface Database {
           company_name_detail?: string
           job_title?: string
           job_url?: string
-          position?: string
+          job_category_main?: string
+          job_category_sub?: string
           employment_type?: string
+          location?: string
+          deadline_date?: string | null
+          job_description?: string | null
+          requirements?: string | null
+          preferred_qualifications?: string | null
+          raw_id?: number | null
+          contract_duration?: string | null
+          is_liberal?: boolean
           created_at?: string
         }
       }
