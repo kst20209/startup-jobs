@@ -41,6 +41,7 @@ interface JobPostListProps {
 // 글로벌 상태 (간단한 상태 관리)
 let selectedCompanyGlobal = '전체'
 let liberalFilterGlobal: 'liberal' | 'science' | 'all' = 'liberal' // 문과가 기본값
+let employmentFilterGlobal: 'permanent' | 'contract' | 'all' = 'contract' // 계약직이 기본값
 const listeners: Set<() => void> = new Set()
 
 export const companyStore = {
@@ -54,6 +55,11 @@ export const companyStore = {
     liberalFilterGlobal = filter
     listeners.forEach(listener => listener())
   },
+  getEmploymentFilter: () => employmentFilterGlobal,
+  setEmploymentFilter: (filter: 'permanent' | 'contract' | 'all') => {
+    employmentFilterGlobal = filter
+    listeners.forEach(listener => listener())
+  },
   subscribe: (listener: () => void) => {
     listeners.add(listener)
     return () => {
@@ -65,6 +71,7 @@ export const companyStore = {
 export default function JobPostList({ allJobPosts }: JobPostListProps) {
   const [selectedCompany, setSelectedCompany] = useState('전체')
   const [liberalFilter, setLiberalFilter] = useState<'liberal' | 'science' | 'all'>('liberal')
+  const [employmentFilter, setEmploymentFilter] = useState<'permanent' | 'contract' | 'all'>('contract')
   const [displayCount, setDisplayCount] = useState(20)
 
   // 글로벌 상태 구독
@@ -72,14 +79,36 @@ export default function JobPostList({ allJobPosts }: JobPostListProps) {
     const unsubscribe = companyStore.subscribe(() => {
       setSelectedCompany(companyStore.getSelectedCompany())
       setLiberalFilter(companyStore.getLiberalFilter())
+      setEmploymentFilter(companyStore.getEmploymentFilter())
       setDisplayCount(20) // 필터 변경 시 표시 개수 초기화
     })
     return () => unsubscribe()
   }, [])
 
+  // 고용형태 필터링 함수
+  const getEmploymentCategory = (employmentType: string | null): 'permanent' | 'contract' | 'unknown' => {
+    if (!employmentType || employmentType.trim() === '') {
+      return 'unknown'
+    }
+    
+    const type = employmentType.trim()
+    
+    // 정규직 그룹
+    if (type === '정규직' || type === '정규') {
+      return 'permanent'
+    }
+    
+    // 계약직 그룹
+    if (['계약직', '단기계약직', '인턴', '기간제', '어시스턴트', '계약', '프리랜서'].includes(type)) {
+      return 'contract'
+    }
+    
+    return 'unknown'
+  }
+
   // 필터링된 채용공고 (즉시 계산)
   const filteredJobPosts = useMemo(() => {
-    console.log(`🔍 클라이언트에서 필터링: ${selectedCompany}, 문과/이과: ${liberalFilter}`)
+    console.log(`🔍 클라이언트에서 필터링: ${selectedCompany}, 문과/이과: ${liberalFilter}, 고용형태: ${employmentFilter}`)
     
     let filtered = allJobPosts
 
@@ -96,10 +125,18 @@ export default function JobPostList({ allJobPosts }: JobPostListProps) {
       filtered = filtered.filter(post => post.is_liberal === false)
     }
     // 'all'인 경우는 모든 결과 표시 (추가 필터링 없음)
+
+    // 3. 고용형태 필터링
+    if (employmentFilter === 'permanent') {
+      filtered = filtered.filter(post => getEmploymentCategory(post.employment_type) === 'permanent')
+    } else if (employmentFilter === 'contract') {
+      filtered = filtered.filter(post => getEmploymentCategory(post.employment_type) === 'contract')
+    }
+    // 'all'인 경우는 모든 결과 표시 (추가 필터링 없음)
     
     console.log(`📊 필터링 결과: ${filtered.length}개 (전체: ${allJobPosts.length}개)`)
     return filtered
-  }, [allJobPosts, selectedCompany, liberalFilter])
+  }, [allJobPosts, selectedCompany, liberalFilter, employmentFilter])
 
   // 현재 표시할 채용공고 (무한 스크롤용)
   const displayedJobPosts = useMemo(() => {
