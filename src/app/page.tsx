@@ -94,8 +94,8 @@ export default async function HomePage() {
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
         {/* 메인 타이틀 및 검색창 카드 - 서버 컴포넌트 */}
-        <div className="backdrop-blur-xl bg-white/90 rounded-2xl shadow-xl border border-white/20 p-8 mb-8 text-center relative overflow-hidden">
-          <div className="relative z-10">
+        <div className="backdrop-blur-xl bg-white/90 rounded-2xl shadow-xl border border-white/20 p-8 mb-8 text-center relative">
+          <div className="relative z-50">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
               스타트업 채용공고 검색기
             </h1>
@@ -126,7 +126,7 @@ export default async function HomePage() {
         </div>
 
         {/* 기업 버튼 리스트 - 클라이언트 컴포넌트 */}
-        <div className="mb-6">
+        <div className="mb-6 relative z-10">
           <div className="flex gap-3 justify-center flex-wrap">
             {/* 전체 보기 버튼 */}
             <Suspense fallback={
