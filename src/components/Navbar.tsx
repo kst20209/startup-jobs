@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import FeedbackModal from './FeedbackModal'
 
-export default function Header() {
+export default function Navbar() {
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false)
 
   return (

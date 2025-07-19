@@ -4,7 +4,7 @@ import { JobPost } from '@/types/database'
 import DynamicBackground from '@/components/DynamicBackground'
 import CompanyButton, { AllCompaniesButton } from '@/components/CompanyButton'
 import JobPostList from '@/components/JobPostList'
-import Header from '@/components/Header'
+import Navbar from '@/components/Navbar'
 import LiberalToggle from '@/components/LiberalToggle'
 import SearchInput from '@/components/SearchInput'
 
@@ -89,8 +89,8 @@ export default async function HomePage() {
         <DynamicBackground />
       </Suspense>
 
-      {/* 헤더 - 클라이언트 컴포넌트 (피드백 모달 포함) */}
-      <Header />
+      {/* 네비게이션 바 - 클라이언트 컴포넌트 (피드백 모달 포함) */}
+      <Navbar />
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
         {/* 메인 타이틀 및 검색창 카드 - 서버 컴포넌트 */}
