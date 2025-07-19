@@ -306,7 +306,7 @@ export default function JobPostList({ allJobPosts }: JobPostListProps) {
           displayedJobPosts.map((jobPost) => (
             <div key={jobPost.id}>
               <a
-                href={jobPost.job_url}
+                href={`${jobPost.job_url}?utm_source=letscareer&utm_medium=letscareer_mvp`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-gray-300 transition-all duration-200 group"
