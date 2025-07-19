@@ -14,6 +14,8 @@ export default function LiberalToggle() {
   const employmentDropdownRef = useRef<HTMLDivElement>(null)
   const liberalButtonRef = useRef<HTMLButtonElement>(null)
   const employmentButtonRef = useRef<HTMLButtonElement>(null)
+  const liberalDropdownMenuRef = useRef<HTMLDivElement>(null)
+  const employmentDropdownMenuRef = useRef<HTMLDivElement>(null)
 
   // 글로벌 상태 구독
   useEffect(() => {
@@ -26,14 +28,29 @@ export default function LiberalToggle() {
     return unsubscribe
   }, [])
 
-  // 드롭다운 외부 클릭 시 닫기
+  // 드롭다운 외부 클릭 시 닫기 (개선된 로직)
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (liberalButtonRef.current && !liberalButtonRef.current.contains(event.target as Node)) {
-        setLiberalDropdownOpen(false)
+      const target = event.target as Node
+      
+      // 문과/이과 드롭다운 체크
+      if (liberalDropdownOpen) {
+        const isInsideButton = liberalButtonRef.current?.contains(target)
+        const isInsideMenu = liberalDropdownMenuRef.current?.contains(target)
+        
+        if (!isInsideButton && !isInsideMenu) {
+          setLiberalDropdownOpen(false)
+        }
       }
-      if (employmentButtonRef.current && !employmentButtonRef.current.contains(event.target as Node)) {
-        setEmploymentDropdownOpen(false)
+      
+      // 고용형태 드롭다운 체크
+      if (employmentDropdownOpen) {
+        const isInsideButton = employmentButtonRef.current?.contains(target)
+        const isInsideMenu = employmentDropdownMenuRef.current?.contains(target)
+        
+        if (!isInsideButton && !isInsideMenu) {
+          setEmploymentDropdownOpen(false)
+        }
       }
     }
 
@@ -41,18 +58,36 @@ export default function LiberalToggle() {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [])
+  }, [liberalDropdownOpen, employmentDropdownOpen])
 
   const handleLiberalChange = (filter: 'liberal' | 'science' | 'all') => {
+    console.log(`🔄 문과/이과 필터 변경: ${filter}`)
     setLiberalFilter(filter)
     companyStore.setLiberalFilter(filter)
     setLiberalDropdownOpen(false)
   }
 
   const handleEmploymentChange = (filter: 'permanent' | 'contract' | 'all') => {
+    console.log(`🔄 고용형태 필터 변경: ${filter}`)
     setEmploymentFilter(filter)
     companyStore.setEmploymentFilter(filter)
     setEmploymentDropdownOpen(false)
+  }
+
+  const handleLiberalButtonClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setLiberalDropdownOpen(!liberalDropdownOpen)
+    // 다른 드롭다운 닫기
+    setEmploymentDropdownOpen(false)
+  }
+
+  const handleEmploymentButtonClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setEmploymentDropdownOpen(!employmentDropdownOpen)
+    // 다른 드롭다운 닫기
+    setLiberalDropdownOpen(false)
   }
 
   const getLiberalButtonText = () => {
@@ -114,7 +149,7 @@ export default function LiberalToggle() {
             <div className="relative" ref={liberalDropdownRef}>
               <button
                 ref={liberalButtonRef}
-                onClick={() => setLiberalDropdownOpen(!liberalDropdownOpen)}
+                onClick={handleLiberalButtonClick}
                 className="
                   px-3 py-1.5 rounded-md font-medium
                   transition-colors duration-200
@@ -139,7 +174,7 @@ export default function LiberalToggle() {
             <div className="relative" ref={employmentDropdownRef}>
               <button
                 ref={employmentButtonRef}
-                onClick={() => setEmploymentDropdownOpen(!employmentDropdownOpen)}
+                onClick={handleEmploymentButtonClick}
                 className="
                   px-3 py-1.5 rounded-md font-medium
                   transition-colors duration-200
@@ -166,17 +201,23 @@ export default function LiberalToggle() {
       {/* Portal을 사용한 드롭다운 렌더링 */}
       {liberalDropdownOpen && typeof window !== 'undefined' && createPortal(
         <div 
+          ref={liberalDropdownMenuRef}
           className="fixed bg-white border border-gray-200 rounded-md shadow-lg z-[9999]"
           style={{
             top: getDropdownPosition(liberalButtonRef).top,
             left: getDropdownPosition(liberalButtonRef).left,
             width: getDropdownPosition(liberalButtonRef).width
           }}
+          onClick={(e) => e.stopPropagation()}
         >
           {liberalOptions.map((option) => (
             <button
               key={option.value}
-              onClick={() => handleLiberalChange(option.value as 'liberal' | 'science' | 'all')}
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                handleLiberalChange(option.value as 'liberal' | 'science' | 'all')
+              }}
               className={`
                 w-full px-3 py-2 text-left text-sm hover:bg-gray-50 transition-colors
                 ${liberalFilter === option.value ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-700'}
@@ -191,17 +232,23 @@ export default function LiberalToggle() {
 
       {employmentDropdownOpen && typeof window !== 'undefined' && createPortal(
         <div 
+          ref={employmentDropdownMenuRef}
           className="fixed bg-white border border-gray-200 rounded-md shadow-lg z-[9999]"
           style={{
             top: getDropdownPosition(employmentButtonRef).top,
             left: getDropdownPosition(employmentButtonRef).left,
             width: getDropdownPosition(employmentButtonRef).width
           }}
+          onClick={(e) => e.stopPropagation()}
         >
           {employmentOptions.map((option) => (
             <button
               key={option.value}
-              onClick={() => handleEmploymentChange(option.value as 'permanent' | 'contract' | 'all')}
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                handleEmploymentChange(option.value as 'permanent' | 'contract' | 'all')
+              }}
               className={`
                 w-full px-3 py-2 text-left text-sm hover:bg-gray-50 transition-colors
                 ${employmentFilter === option.value ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-700'}
