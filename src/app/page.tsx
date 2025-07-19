@@ -7,6 +7,7 @@ import JobPostList from '@/components/JobPostList'
 import Navbar from '@/components/Navbar'
 import LiberalToggle from '@/components/LiberalToggle'
 import SearchInput from '@/components/SearchInput'
+import Image from 'next/image'
 
 // 24시간마다 revalidate (하루 한 번 데이터 업데이트)
 export const revalidate = 86400
@@ -92,7 +93,21 @@ export default async function HomePage() {
       {/* 네비게이션 바 - 클라이언트 컴포넌트 (피드백 모달 포함) */}
       <Navbar />
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+      {/* 상단 이미지 - 1120x200 */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        <div className="w-full relative">
+          <Image
+            src="/logos/banner.png"
+            alt="상단 배너"
+            width={1120}
+            height={200}
+            className="rounded-lg shadow-lg w-full h-auto"
+            priority
+          />
+        </div>
+      </div>
+
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 mb-8 relative z-10">
         {/* 메인 타이틀 및 검색창 카드 - 서버 컴포넌트 */}
         <div className="backdrop-blur-xl bg-white/90 rounded-2xl shadow-xl border border-white/20 p-8 mb-8 text-center relative">
           <div className="relative z-50">
