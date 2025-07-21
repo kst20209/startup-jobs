@@ -37,7 +37,7 @@ export default function SearchInput() {
       value={inputValue}
       onChange={handleInputChange}
       placeholder="검색어를 입력하세요 (예: 운영, HR)"
-      className="w-full max-w-lg px-4 py-3 rounded-xl border border-gray-200/50 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#5D5DF6] focus:border-transparent transition text-base bg-white/70 backdrop-blur-sm placeholder-gray-400"
+      className="w-full max-w-lg px-4 py-3 rounded-xl border border-gray-200/50 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#5D5DF6] focus:border-transparent transition text-base bg-white/70 backdrop-blur-sm placeholder-gray-400 md:px-3 md:py-2.5 md:text-sm sm:px-3 sm:py-2 sm:text-sm xs:px-2 xs:py-1.5 xs:text-xs"
     />
   )
 } 
