@@ -11,8 +11,19 @@ export default function Navbar() {
     <>
       <header className="w-full backdrop-blur-md bg-white/80 sticky top-0 z-20 shadow-sm">
         <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-2">
-          <div className="flex items-center gap-2">
-            <Image src="/logos/logo.png" alt="logo" width={180} height={90} className="w-[180px] h-[90px] sm:w-[120px] sm:h-[60px]" />
+          <div className="flex items-center gap-2 px-2">
+            <Image
+              src="/logos/logo.png"
+              alt="logo"
+              width={486}
+              height={77}
+              className="h-auto responsive-logo"
+              style={{
+                maxWidth: '180px',
+                width: '100%',
+                aspectRatio: '486/77',
+              }}
+            />
             <nav className="ml-8 flex gap-6 text-gray-700 text-base font-medium sm:text-sm sm:ml-3 sm:gap-3">
               
             </nav>
@@ -34,6 +45,13 @@ export default function Navbar() {
         isOpen={isFeedbackModalOpen} 
         onClose={() => setIsFeedbackModalOpen(false)} 
       />
+      <style jsx>{`
+        @media (max-width: 640px) {
+          .responsive-logo {
+            max-width: 120px !important;
+          }
+        }
+      `}</style>
     </>
   )
 } 
