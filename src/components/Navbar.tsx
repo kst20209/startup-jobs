@@ -12,15 +12,15 @@ export default function Navbar() {
       <header className="w-full backdrop-blur-md bg-white/80 sticky top-0 z-20 shadow-sm">
         <div className="max-w-6xl mx-auto flex items-center justify-between px-4 py-2">
           <div className="flex items-center gap-2">
-            <Image src="/logos/logo.png" alt="logo" width={180} height={90} />
-            <nav className="ml-8 flex gap-6 text-gray-700 text-base font-medium">
+            <Image src="/logos/logo.png" alt="logo" width={180} height={90} className="w-[180px] h-[90px] sm:w-[120px] sm:h-[60px]" />
+            <nav className="ml-8 flex gap-6 text-gray-700 text-base font-medium sm:text-sm sm:ml-3 sm:gap-3">
               
             </nav>
           </div>
           {/* 우측: 피드백 요청 버튼 */}
           <div className="flex items-center">
             <button
-              className="bg-[#5D5DF6]/10 hover:bg-[#5D5DF6]/20 text-[#5D5DF6] font-semibold px-6 py-2.5 rounded-full border border-[#5D5DF6]/30 transition-colors text-sm md:text-base min-w-[120px]"
+              className="bg-[#5D5DF6]/10 hover:bg-[#5D5DF6]/20 text-[#5D5DF6] font-semibold px-6 py-2.5 rounded-full border border-[#5D5DF6]/30 transition-colors text-sm md:text-base min-w-[120px] sm:text-xs sm:px-3 sm:py-1.5 sm:min-w-[80px]"
               onClick={() => setIsFeedbackModalOpen(true)}
             >
               제발 도와주세요 🙏

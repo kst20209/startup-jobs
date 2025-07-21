@@ -126,22 +126,34 @@ export default function DynamicBackground() {
   const colors = COMPANY_COLORS[selectedCompany] || COMPANY_COLORS['전체']
 
   return (
-    <div 
-      className="fixed inset-0 transition-all duration-700 ease-in-out -z-10"
-      style={{
-        background: colors.bg,
-      }}
-    >
+    <>
       <div 
-        className="absolute inset-0 opacity-50 transition-all duration-700"
+        className="fixed inset-0 transition-all duration-700 ease-in-out -z-10"
         style={{
-          backgroundImage: `
-            radial-gradient(circle at 25% 25%, ${colors.overlay1} 0%, transparent 50%),
-            radial-gradient(circle at 75% 75%, ${colors.overlay2} 0%, transparent 50%),
-            radial-gradient(circle at 50% 10%, ${colors.overlay3} 0%, transparent 70%)
-          `
+          background: colors.bg,
         }}
-      />
-    </div>
+      >
+        <div 
+          className="absolute inset-0 transition-all duration-700"
+          style={{
+            backgroundImage: `
+              radial-gradient(circle at 25% 25%, ${colors.overlay1} 0%, transparent 50%),
+              radial-gradient(circle at 75% 75%, ${colors.overlay2} 0%, transparent 50%),
+              radial-gradient(circle at 50% 10%, ${colors.overlay3} 0%, transparent 70%)
+            `
+          }}
+        />
+      </div>
+      <style jsx global>{`
+        @media (max-width: 600px) {
+          .absolute.inset-0.transition-all.duration-700 {
+            background-image:
+              radial-gradient(circle at 25% 25%, ${colors.overlay1} 0%, transparent 30%),
+              radial-gradient(circle at 75% 75%, ${colors.overlay2} 0%, transparent 30%),
+              radial-gradient(circle at 50% 10%, ${colors.overlay3} 0%, transparent 40%);
+          }
+        }
+      `}</style>
+    </>
   )
 } 

@@ -111,10 +111,10 @@ export default async function HomePage() {
         {/* 메인 타이틀 및 검색창 카드 - 서버 컴포넌트 */}
         <div className="backdrop-blur-xl bg-white/90 rounded-2xl shadow-xl border border-white/20 p-8 mb-8 text-center relative">
           <div className="relative z-50">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2 sm:text-xl">
               스타트업 채용공고 검색기
             </h1>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-600 mb-6 sm:text-base">
               최신 스타트업 채용 정보를 한눈에 확인하세요
             </p>
             <div className="flex justify-center">
