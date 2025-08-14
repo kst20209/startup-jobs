@@ -49,7 +49,7 @@ const addUtmParams = (url: string, utmParams: { [key: string]: string }): string
     })
     
     return urlObj.toString()
-  } catch (error) {
+  } catch {
     // URL이 유효하지 않은 경우, 단순 문자열 조작으로 처리
     const separator = url.includes('?') ? '&' : '?'
     const utmString = Object.entries(utmParams)
