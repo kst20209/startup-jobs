@@ -52,7 +52,7 @@ export default function CompanyButton({ company }: CompanyButtonProps) {
     <button
       onClick={handleClick}
       className={`
-        relative w-20 h-20 rounded-2xl transition-all duration-300 group z-10
+        relative w-20 h-20 rounded-2xl transition-all duration-300 group z-[1]
         ${isSelected 
           ? 'ring-4 ring-offset-2 shadow-xl transform scale-105' 
           : 'hover:shadow-lg hover:transform hover:scale-105'
@@ -145,7 +145,7 @@ export function AllCompaniesButton() {
     <button
       onClick={handleClick}
       className={`
-        relative w-20 h-20 rounded-2xl transition-all duration-300 group z-10
+        relative w-20 h-20 rounded-2xl transition-all duration-300 group z-[1]
         ${isSelected 
           ? 'ring-4 ring-offset-2 shadow-xl transform scale-105 bg-[#5D5DF6]' 
           : 'bg-gray-100 hover:bg-[#5D5DF6] hover:shadow-lg hover:transform hover:scale-105'
