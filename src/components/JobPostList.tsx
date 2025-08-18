@@ -38,6 +38,28 @@ interface JobPostListProps {
   allJobPosts: JobPost[]
 }
 
+// URL에 UTM 파라미터를 안전하게 추가하는 메서드
+const addUtmParams = (url: string, utmParams: { [key: string]: string }): string => {
+  try {
+    const urlObj = new URL(url)
+    
+    // 기존 UTM 파라미터가 있다면 덮어쓰기
+    Object.entries(utmParams).forEach(([key, value]) => {
+      urlObj.searchParams.set(key, value)
+    })
+    
+    return urlObj.toString()
+  } catch {
+    // URL이 유효하지 않은 경우, 단순 문자열 조작으로 처리
+    const separator = url.includes('?') ? '&' : '?'
+    const utmString = Object.entries(utmParams)
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join('&')
+    
+    return `${url}${separator}${utmString}`
+  }
+}
+
 // 글로벌 상태 (간단한 상태 관리)
 let selectedCompanyGlobal = '전체'
 let liberalFilterGlobal: 'liberal' | 'science' | 'all' = 'liberal' // 문과가 기본값
@@ -306,7 +328,7 @@ export default function JobPostList({ allJobPosts }: JobPostListProps) {
           displayedJobPosts.map((jobPost) => (
             <div key={jobPost.id}>
               <a
-                href={`${jobPost.job_url}?utm_source=letscareer&utm_medium=letscareer_mvp`}
+                href={addUtmParams(jobPost.job_url, { utm_source: 'letscareer', utm_medium: 'letscareer_mvp' })}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md hover:border-gray-300 transition-all duration-200 group"

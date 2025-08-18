@@ -11,8 +11,10 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@supabase/supabase-js": "^2.50.1",
+    "dayjs": "^1.11.13",
     "dotenv": "^16.5.0",
     "next": "15.3.4",
+    "puppeteer": "^24.15.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

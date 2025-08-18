@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { createPortal } from 'react-dom'
 import { companyStore } from './JobPostList'
 
 export default function LiberalToggle() {
@@ -12,10 +11,10 @@ export default function LiberalToggle() {
   
   const liberalDropdownRef = useRef<HTMLDivElement>(null)
   const employmentDropdownRef = useRef<HTMLDivElement>(null)
-  const liberalButtonRef = useRef<HTMLButtonElement>(null)
-  const employmentButtonRef = useRef<HTMLButtonElement>(null)
   const liberalDropdownMenuRef = useRef<HTMLDivElement>(null)
   const employmentDropdownMenuRef = useRef<HTMLDivElement>(null)
+
+
 
   // 글로벌 상태 구독
   useEffect(() => {
@@ -28,14 +27,14 @@ export default function LiberalToggle() {
     return unsubscribe
   }, [])
 
-  // 드롭다운 외부 클릭 시 닫기 (개선된 로직)
+  // 드롭다운 외부 클릭 시 닫기
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node
       
       // 문과/이과 드롭다운 체크
       if (liberalDropdownOpen) {
-        const isInsideButton = liberalButtonRef.current?.contains(target)
+        const isInsideButton = liberalDropdownRef.current?.contains(target)
         const isInsideMenu = liberalDropdownMenuRef.current?.contains(target)
         
         if (!isInsideButton && !isInsideMenu) {
@@ -45,7 +44,7 @@ export default function LiberalToggle() {
       
       // 고용형태 드롭다운 체크
       if (employmentDropdownOpen) {
-        const isInsideButton = employmentButtonRef.current?.contains(target)
+        const isInsideButton = employmentDropdownRef.current?.contains(target)
         const isInsideMenu = employmentDropdownMenuRef.current?.contains(target)
         
         if (!isInsideButton && !isInsideMenu) {
@@ -55,6 +54,7 @@ export default function LiberalToggle() {
     }
 
     document.addEventListener('mousedown', handleClickOutside)
+    
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
@@ -128,27 +128,14 @@ export default function LiberalToggle() {
     { value: 'all', label: '전체' }
   ]
 
-  // 드롭다운 위치 계산
-  const getDropdownPosition = (buttonRef: React.RefObject<HTMLButtonElement | null>) => {
-    if (!buttonRef.current) return { top: 0, left: 0, width: 0 }
-    
-    const rect = buttonRef.current.getBoundingClientRect()
-    return {
-      top: rect.bottom + window.scrollY + 4,
-      left: rect.left + window.scrollX,
-      width: rect.width
-    }
-  }
-
   return (
-    <div className="mt-2 relative z-[999]">
+    <div className="mt-2 relative z-[100]" style={{ isolation: 'isolate', transform: 'translateZ(0)' }}>
       <div className="flex justify-center">
         <div className="w-full max-w-lg">
           <div className="flex gap-2">
             {/* 문과/이과 드롭다운 */}
             <div className="relative" ref={liberalDropdownRef}>
               <button
-                ref={liberalButtonRef}
                 onClick={handleLiberalButtonClick}
                 className="
                   px-3 py-1.5 rounded-md font-medium
@@ -168,12 +155,37 @@ export default function LiberalToggle() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
+              
+              {/* 문과/이과 드롭다운 메뉴 */}
+              {liberalDropdownOpen && (
+                <div 
+                  ref={liberalDropdownMenuRef}
+                  className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-md shadow-xl z-[100] w-full"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {liberalOptions.map((option) => (
+                    <button
+                      key={option.value}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        handleLiberalChange(option.value as 'liberal' | 'science' | 'all')
+                      }}
+                      className={`
+                        w-full px-3 py-2 text-left text-sm hover:bg-gray-50 transition-colors first:rounded-t-md last:rounded-b-md
+                        ${liberalFilter === option.value ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-700'}
+                      `}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* 고용형태 드롭다운 */}
             <div className="relative" ref={employmentDropdownRef}>
               <button
-                ref={employmentButtonRef}
                 onClick={handleEmploymentButtonClick}
                 className="
                   px-3 py-1.5 rounded-md font-medium
@@ -193,73 +205,36 @@ export default function LiberalToggle() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
+              
+              {/* 고용형태 드롭다운 메뉴 */}
+              {employmentDropdownOpen && (
+                <div 
+                  ref={employmentDropdownMenuRef}
+                  className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-md shadow-xl z-[100] w-full"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {employmentOptions.map((option) => (
+                    <button
+                      key={option.value}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        handleEmploymentChange(option.value as 'permanent' | 'contract' | 'all')
+                      }}
+                      className={`
+                        w-full px-3 py-2 text-left text-sm hover:bg-gray-50 transition-colors first:rounded-t-md last:rounded-b-md
+                        ${employmentFilter === option.value ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-700'}
+                      `}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
-
-      {/* Portal을 사용한 드롭다운 렌더링 */}
-      {liberalDropdownOpen && typeof window !== 'undefined' && createPortal(
-        <div 
-          ref={liberalDropdownMenuRef}
-          className="fixed bg-white border border-gray-200 rounded-md shadow-lg z-[9999]"
-          style={{
-            top: getDropdownPosition(liberalButtonRef).top,
-            left: getDropdownPosition(liberalButtonRef).left,
-            width: getDropdownPosition(liberalButtonRef).width
-          }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {liberalOptions.map((option) => (
-            <button
-              key={option.value}
-              onClick={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                handleLiberalChange(option.value as 'liberal' | 'science' | 'all')
-              }}
-              className={`
-                w-full px-3 py-2 text-left text-sm hover:bg-gray-50 transition-colors
-                ${liberalFilter === option.value ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-700'}
-              `}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>,
-        document.body
-      )}
-
-      {employmentDropdownOpen && typeof window !== 'undefined' && createPortal(
-        <div 
-          ref={employmentDropdownMenuRef}
-          className="fixed bg-white border border-gray-200 rounded-md shadow-lg z-[9999]"
-          style={{
-            top: getDropdownPosition(employmentButtonRef).top,
-            left: getDropdownPosition(employmentButtonRef).left,
-            width: getDropdownPosition(employmentButtonRef).width
-          }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {employmentOptions.map((option) => (
-            <button
-              key={option.value}
-              onClick={(e) => {
-                e.preventDefault()
-                e.stopPropagation()
-                handleEmploymentChange(option.value as 'permanent' | 'contract' | 'all')
-              }}
-              className={`
-                w-full px-3 py-2 text-left text-sm hover:bg-gray-50 transition-colors
-                ${employmentFilter === option.value ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-700'}
-              `}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>,
-        document.body
-      )}
     </div>
   )
 } 

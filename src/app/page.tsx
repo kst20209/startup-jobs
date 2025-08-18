@@ -109,12 +109,12 @@ export default async function HomePage() {
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 mb-8 relative z-10">
         {/* 메인 타이틀 및 검색창 카드 - 서버 컴포넌트 */}
-        <div className="backdrop-blur-xl bg-white/90 rounded-2xl shadow-xl border border-white/20 p-8 mb-8 text-center relative">
+        <div className="backdrop-blur-xl bg-white/90 rounded-2xl shadow-xl border border-white/20 p-8 mb-8 text-center relative overflow-visible" style={{ isolation: 'isolate', zIndex: 9999 }}>
           <div className="relative z-50">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="text-xl font-bold text-gray-900 mb-2 sm:text-3xl">
               스타트업 채용공고 검색기
             </h1>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-600 mb-6 sm:text-base">
               최신 스타트업 채용 정보를 한눈에 확인하세요
             </p>
             <div className="flex justify-center">
@@ -130,18 +130,18 @@ export default async function HomePage() {
               </Suspense>
             </div>
             {/* 문과/이과 토글 버튼 */}
-        <Suspense fallback={
-          <div className="flex justify-center mb-6">
-            <div className="w-24 h-12 rounded-xl bg-gray-300 animate-pulse" />
-          </div>
-        }>
-          <LiberalToggle />
-        </Suspense>
+            <Suspense fallback={
+              <div className="flex justify-center mb-6">
+                <div className="w-24 h-12 rounded-xl bg-gray-300 animate-pulse" />
+              </div>
+            }>
+              <LiberalToggle />
+            </Suspense>
           </div>
         </div>
 
         {/* 기업 버튼 리스트 - 클라이언트 컴포넌트 */}
-        <div className="mb-6 relative z-10">
+        <div className="mb-6 relative z-[1]">
           <div className="flex gap-3 justify-center flex-wrap">
             {/* 전체 보기 버튼 */}
             <Suspense fallback={
