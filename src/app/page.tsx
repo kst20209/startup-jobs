@@ -199,6 +199,7 @@ async function getAllJobPosts(): Promise<JobPost[]> {
     const { data: jobPosts, error } = await supabase
       .from('JobPost')
       .select('*')
+      .eq('is_active', true)
       .order('created_at', { ascending: false })
 
     if (error) {
