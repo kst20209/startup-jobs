@@ -19,6 +19,7 @@ export interface Database {
           raw_id: number | null
           contract_duration: string | null
           is_liberal: boolean
+          is_active: boolean
           created_at: string
         }
         Insert: {
@@ -38,6 +39,7 @@ export interface Database {
           raw_id?: number | null
           contract_duration?: string | null
           is_liberal?: boolean
+          is_active?: boolean
           created_at?: string
         }
         Update: {
@@ -57,6 +59,7 @@ export interface Database {
           raw_id?: number | null
           contract_duration?: string | null
           is_liberal?: boolean
+          is_active?: boolean
           created_at?: string
         }
       }

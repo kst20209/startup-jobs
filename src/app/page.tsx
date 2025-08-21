@@ -8,6 +8,7 @@ import Navbar from '@/components/Navbar'
 import LiberalToggle from '@/components/LiberalToggle'
 import SearchInput from '@/components/SearchInput'
 import Image from 'next/image'
+import Link from 'next/link'
 
 // 24시간마다 revalidate (하루 한 번 데이터 업데이트)
 export const revalidate = 86400
@@ -96,14 +97,21 @@ export default async function HomePage() {
       {/* 상단 이미지 - 1120x200 */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
         <div className="w-full relative">
-          <Image
-            src="/logos/banner.png"
-            alt="상단 배너"
-            width={1120}
-            height={200}
-            className="rounded-lg shadow-lg w-full h-auto"
-            priority
-          />
+          <Link 
+            href="https://www.letscareer.co.kr/?utm_source=letscareer&utm_medium=letscareer_mvp"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block hover:opacity-90 transition-opacity duration-200"
+          >
+            <Image
+              src="/logos/banner.png"
+              alt="상단 배너"
+              width={1120}
+              height={200}
+              className="rounded-lg shadow-lg w-full h-auto"
+              priority
+            />
+          </Link>
         </div>
       </div>
 
@@ -199,6 +207,7 @@ async function getAllJobPosts(): Promise<JobPost[]> {
     const { data: jobPosts, error } = await supabase
       .from('JobPost')
       .select('*')
+      .eq('is_active', true)
       .order('created_at', { ascending: false })
 
     if (error) {

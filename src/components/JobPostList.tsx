@@ -215,6 +215,12 @@ export default function JobPostList({ allJobPosts }: JobPostListProps) {
     
     let filtered = allJobPosts
 
+    // 0. 활성 상태 필터링 (is_active가 true인 것만)
+    const activeCount = filtered.filter(post => post.is_active === true).length
+    const inactiveCount = filtered.filter(post => post.is_active === false).length
+    console.log(`📊 활성 상태 필터링: 활성 ${activeCount}개, 비활성 ${inactiveCount}개`)
+    filtered = filtered.filter(post => post.is_active === true)
+
     // 1. 회사 필터링
     if (selectedCompany !== '전체') {
       const actualCompanyName = COMPANY_NAME_MAPPING[selectedCompany] || selectedCompany
@@ -340,12 +346,12 @@ export default function JobPostList({ allJobPosts }: JobPostListProps) {
                       {(() => {
                         const logoPath = getCompanyLogo(jobPost.company_name)
                         return logoPath ? (
-                          <div className="w-12 h-12 bg-white rounded-lg shadow-sm border border-gray-200 flex items-center justify-center p-2">
+                          <div className="w-14 h-14 bg-white rounded-lg shadow-sm border border-gray-200 flex items-center justify-center p-2">
                             <Image 
                               src={logoPath} 
                               alt={`${jobPost.company_name} 로고`} 
-                              width={32} 
-                              height={32} 
+                              width={48} 
+                              height={48} 
                               className="object-contain"
                             />
                           </div>
