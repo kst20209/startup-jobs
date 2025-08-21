@@ -197,7 +197,7 @@ export default function JobPostList({ allJobPosts }: JobPostListProps) {
     const type = employmentType.trim()
     
     // 정규직 그룹
-    if (type === '정규직' || type === '정규') {
+    if (type === '정규직' || type === '정규' || type === '임원') {
       return 'permanent'
     }
     
