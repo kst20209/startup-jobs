@@ -4,6 +4,27 @@ import { useState, useEffect, useMemo } from 'react'
 import { JobPost } from '@/types/database'
 import Image from 'next/image'
 
+// NEW 표시 여부를 확인하는 함수 (당일 또는 전날에 생성된 경우)
+const isNewJobPost = (createdAt: string): boolean => {
+  const now = new Date()
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000)
+  
+  const postDate = new Date(createdAt)
+  const postDay = new Date(postDate.getFullYear(), postDate.getMonth(), postDate.getDate())
+  
+  return postDay >= yesterday
+}
+
+// NEW 배지 컴포넌트
+const NewBadge = () => (
+  <div className="absolute -top-2 -right-2 md:-right-2 right-2 z-10">
+    <div className="bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg">
+      NEW
+    </div>
+  </div>
+)
+
 // 기업 로고 매핑 (실제 DB company_name에 맞춤)
 const COMPANY_LOGOS: { [key: string]: string } = {
   '네이버 (Naver)': '/logos/naver.svg',
@@ -332,7 +353,10 @@ export default function JobPostList({ allJobPosts }: JobPostListProps) {
           </div>
         ) : (
           displayedJobPosts.map((jobPost) => (
-            <div key={jobPost.id}>
+            <div key={jobPost.id} className="relative">
+              {/* NEW 배지 */}
+              {isNewJobPost(jobPost.created_at) && <NewBadge />}
+              
               <a
                 href={addUtmParams(jobPost.job_url, { utm_source: 'letscareer', utm_medium: 'letscareer_mvp' })}
                 target="_blank"
