@@ -98,17 +98,27 @@ export default async function HomePage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
         <div className="w-full relative">
           <Link 
-            href="https://www.letscareer.co.kr/?utm_source=letscareer&utm_medium=letscareer_mvp"
+            href="https://www.letscareer.co.kr/?utm_source=gonggo&utm_medium=mvp1_banner"
             target="_blank"
             rel="noopener noreferrer"
             className="block hover:opacity-90 transition-opacity duration-200"
           >
+            {/* 데스크톱 배너 */}
             <Image
-              src="/logos/banner.png"
+              src="/mvp1_home_banner.png"
               alt="상단 배너"
               width={1120}
               height={200}
-              className="rounded-lg shadow-lg w-full h-auto"
+              className="rounded-lg shadow-lg w-full h-auto hidden md:block"
+              priority
+            />
+            {/* 모바일 배너 */}
+            <Image
+              src="/mvp1_mobile_banner.png"
+              alt="상단 배너"
+              width={400}
+              height={200}
+              className="rounded-lg shadow-lg w-full h-auto md:hidden"
               priority
             />
           </Link>
