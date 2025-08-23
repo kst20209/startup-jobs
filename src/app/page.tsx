@@ -85,7 +85,7 @@ export default async function HomePage() {
   const allJobPosts = await getAllJobPosts()
 
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen relative overflow-x-hidden">
       {/* 동적 배경 - 클라이언트 컴포넌트 */}
       <Suspense fallback={null}>
         <DynamicBackground />
@@ -95,7 +95,7 @@ export default async function HomePage() {
       <Navbar />
 
       {/* 상단 이미지 - 1120x200 */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+      <div className="max-w-4xl mx-auto px-3 sm:px-4 lg:px-8 mt-4">
         <div className="w-full relative">
           <Link 
             href="https://www.letscareer.co.kr/?utm_source=gonggo&utm_medium=mvp1_banner"
@@ -109,7 +109,7 @@ export default async function HomePage() {
               alt="상단 배너"
               width={1120}
               height={200}
-              className="rounded-lg shadow-lg w-full h-auto hidden md:block"
+              className="rounded-lg shadow-lg w-full h-auto hidden sm:block max-w-full"
               priority
             />
             {/* 모바일 배너 */}
@@ -118,14 +118,14 @@ export default async function HomePage() {
               alt="상단 배너"
               width={400}
               height={200}
-              className="rounded-lg shadow-lg w-full h-auto md:hidden"
+              className="rounded-lg shadow-lg w-full h-auto sm:hidden max-w-full"
               priority
             />
           </Link>
         </div>
       </div>
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 mb-8 relative z-10">
+      <main className="max-w-4xl mx-auto px-3 sm:px-4 lg:px-8 mt-4 mb-8 relative z-10">
         {/* 메인 타이틀 및 검색창 카드 - 서버 컴포넌트 */}
         <div className="backdrop-blur-xl bg-white/90 rounded-2xl shadow-xl border border-white/20 p-8 mb-8 text-center relative overflow-visible" style={{ isolation: 'isolate', zIndex: 9999 }}>
           <div className="relative z-50">
