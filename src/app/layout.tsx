@@ -6,9 +6,9 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: '스타트업 채용공고 검색기',
-  description: '최신 스타트업 채용 정보를 한눈에 확인하세요. 카카오, 네이버, 토스, 쿠팡 등 유명 스타트업의 채용 정보를 실시간으로 검색하고 지원하세요.',
-  keywords: ['스타트업', '채용', '구인', '취업', '카카오', '네이버', '토스', '쿠팡', '배민', '당근마켓'],
+  title: 'IT 대기업 채용공고 검색기',
+  description: '가장 빠르게 네카라쿠배당토 채용 정보를 확인하세요',
+  keywords: ['네카라쿠배당토', 'IT 대기업 채용', '카카오 채용', '네이버 채용', '라인 채용', '쿠팡 채용', '배민 채용', '당근마켓 채용', '토스 채용', '대기업 채용공고', 'IT 채용정보', '신입 채용', '경력 채용', '개발자 채용', '프로그래머 채용', '소프트웨어 엔지니어 채용', 'IT 취업', '대기업 취업', '네카라쿠배 취업', '채용 알림', '채용 정보', '구인 정보'],
   authors: [{ name: 'Startup Jobs' }],
   creator: 'Startup Jobs',
   publisher: 'Startup Jobs',
@@ -22,17 +22,17 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: '스타트업 채용공고 검색기',
-    description: '최신 스타트업 채용 정보를 한눈에 확인하세요',
+    title: 'IT 대기업 채용공고 검색기',
+    description: '가장 빠르게 네카라쿠배당토 채용 정보를 확인하세요',
     url: 'https://startup-jobs.vercel.app',
-    siteName: '스타트업 채용공고 검색기',
+    siteName: 'IT 대기업 채용공고 검색기',
     locale: 'ko_KR',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: '스타트업 채용공고 검색기',
-    description: '최신 스타트업 채용 정보를 한눈에 확인하세요',
+    title: 'IT 대기업 채용공고 검색기',
+    description: '가장 빠르게 네카라쿠배당토 채용 정보를 확인하세요',
   },
   robots: {
     index: true,
