@@ -33,7 +33,7 @@ export default function Navbar() {
               className="bg-[#5D5DF6]/10 hover:bg-[#5D5DF6]/20 text-[#5D5DF6] font-semibold px-2 py-1.5 sm:px-5 sm:py-2 rounded-full border border-[#5D5DF6]/30 transition-colors text-xs sm:text-sm min-w-[60px] sm:min-w-[110px]"
               onClick={() => setIsFeedbackModalOpen(true)}
             >
-              <span className="inline">제발 도와주세요 🙏</span>
+              <span className="inline">기능 개선 제안하기</span>
             </button>
           </div>
         </div>
