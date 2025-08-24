@@ -130,10 +130,10 @@ export default async function HomePage() {
         <div className="backdrop-blur-xl bg-white/90 rounded-2xl shadow-xl border border-white/20 p-8 mb-8 text-center relative overflow-visible" style={{ isolation: 'isolate', zIndex: 9999 }}>
           <div className="relative z-50">
             <h1 className="text-xl font-bold text-gray-900 mb-2 sm:text-3xl">
-              스타트업 채용공고 검색기
+              IT 대기업 채용공고 검색기
             </h1>
             <p className="text-gray-600 mb-6 sm:text-base">
-              최신 스타트업 채용 정보를 한눈에 확인하세요
+              가장 빠르게 네카라쿠배당토 채용 정보를 확인하세요
             </p>
             <div className="flex justify-center">
               <Suspense fallback={
