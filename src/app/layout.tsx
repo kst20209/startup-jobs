@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/og-image.png',
+        url: 'og-image.png',
         width: 1200,
         height: 630,
         alt: 'IT 대기업 채용공고 검색기 - 네카라쿠배당토 채용 정보',
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     description: '가장 빠르게 네카라쿠배당토 채용 정보를 확인하세요',
     images: [
       {
-        url: '/og-image.png',
+        url: 'og-image.png',
         width: 1200,
         height: 630,
         alt: 'IT 대기업 채용공고 검색기 - 네카라쿠배당토 채용 정보',
