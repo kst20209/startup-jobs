@@ -5,27 +5,10 @@ import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
-// 환경에 따른 base URL 설정
-const baseUrl = process.env.NODE_ENV === 'production' 
-  ? 'https://startup-jobs.vercel.app'
-  : 'http://localhost:3001'
-
 export const metadata: Metadata = {
   title: 'IT 대기업 채용공고 검색기',
   description: '가장 빠르게 네카라쿠배당토 채용 정보를 확인하세요',
   keywords: ['네카라쿠배당토', 'IT 대기업 채용', '카카오 채용', '네이버 채용', '라인 채용', '쿠팡 채용', '배민 채용', '당근마켓 채용', '토스 채용', '대기업 채용공고', 'IT 채용정보', '신입 채용', '경력 채용', '개발자 채용', '프로그래머 채용', '소프트웨어 엔지니어 채용', 'IT 취업', '대기업 취업', '네카라쿠배 취업', '채용 알림', '채용 정보', '구인 정보'],
-  authors: [{ name: 'Startup Jobs' }],
-  creator: 'Startup Jobs',
-  publisher: 'Startup Jobs',
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  metadataBase: new URL(baseUrl),
-  alternates: {
-    canonical: '/',
-  },
   openGraph: {
     title: 'IT 대기업 채용공고 검색기',
     description: '가장 빠르게 네카라쿠배당토 채용 정보를 확인하세요',
