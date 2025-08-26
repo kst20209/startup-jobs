@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ['latin'] })
 // 환경에 따른 base URL 설정
 const baseUrl = process.env.NODE_ENV === 'production' 
   ? 'https://startup-jobs.vercel.app'
-  : 'http://localhost:3000'
+  : 'http://localhost:3001'
 
 export const metadata: Metadata = {
   title: 'IT 대기업 채용공고 검색기',
@@ -29,10 +29,10 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'IT 대기업 채용공고 검색기',
     description: '가장 빠르게 네카라쿠배당토 채용 정보를 확인하세요',
-    url: baseUrl,
     siteName: 'IT 대기업 채용공고 검색기',
     locale: 'ko_KR',
     type: 'website',
+    url: 'https://startup-jobs-pi.vercel.app',
     images: [
       {
         url: '/og-image.png',
@@ -46,14 +46,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'IT 대기업 채용공고 검색기',
     description: '가장 빠르게 네카라쿠배당토 채용 정보를 확인하세요',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'IT 대기업 채용공고 검색기 - 네카라쿠배당토 채용 정보',
-      },
-    ],
+    images: ['/og-image.png']
   },
   robots: {
     index: true,
