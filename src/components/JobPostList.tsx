@@ -34,6 +34,7 @@ const COMPANY_LOGOS: { [key: string]: string } = {
   '우아한형제들 (Woowahan)': '/logos/baemin.svg',
   '당근 (Carrot)': '/logos/daangn.svg',
   '토스 (Toss)': '/logos/toss.svg',
+  '마이리얼트립 (My Real Trip)': '/logos/myrealtrip.png',
   // 단순 이름도 지원 (fallback)
   '네이버': '/logos/naver.svg',
   '카카오': '/logos/kakao.svg',
@@ -41,7 +42,8 @@ const COMPANY_LOGOS: { [key: string]: string } = {
   '라인': '/logos/line.svg',
   '배민': '/logos/baemin.svg',
   '당근': '/logos/daangn.svg',
-  '토스': '/logos/toss.svg'
+  '토스': '/logos/toss.svg',
+  '마이리얼트립': '/logos/myrealtrip.png'
 }
 
 // 버튼 이름 → 실제 DB company_name 매핑
@@ -52,7 +54,8 @@ const COMPANY_NAME_MAPPING: { [key: string]: string } = {
   '라인': '라인 (LINE)',
   '배민': '우아한형제들 (Woowahan)',
   '당근': '당근 (Carrot)',
-  '토스': '토스 (Toss)'
+  '토스': '토스 (Toss)',
+  '마이리얼트립': '마이리얼트립 (My Real Trip)'
 }
 
 interface JobPostListProps {

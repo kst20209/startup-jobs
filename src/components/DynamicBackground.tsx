@@ -48,6 +48,12 @@ const COMPANY_COLORS: { [key: string]: { bg: string; overlay1: string; overlay2:
     overlay2: 'rgb(204, 224, 255)',
     overlay3: 'rgb(217, 232, 255)'
   },
+  '마이리얼트립 (My Real Trip)': {
+    bg: 'linear-gradient(135deg, rgb(255, 255, 255) 0%, rgb(248, 248, 248) 100%)',
+    overlay1: 'rgb(240, 240, 240)',
+    overlay2: 'rgb(245, 245, 245)',
+    overlay3: 'rgb(248, 248, 248)'
+  },
   // Fallback 단순 이름들 (호환성을 위해)
   '네이버': {
     bg: 'linear-gradient(135deg, rgb(235, 251, 242) 0%, rgb(217, 247, 230) 100%)',
@@ -90,6 +96,12 @@ const COMPANY_COLORS: { [key: string]: { bg: string; overlay1: string; overlay2:
     overlay1: 'rgb(191, 216, 255)',
     overlay2: 'rgb(204, 224, 255)',
     overlay3: 'rgb(217, 232, 255)'
+  },
+  '마이리얼트립': {
+    bg: 'linear-gradient(135deg, rgb(255, 255, 255) 0%, rgb(248, 248, 248) 100%)',
+    overlay1: 'rgb(240, 240, 240)',
+    overlay2: 'rgb(245, 245, 245)',
+    overlay3: 'rgb(248, 248, 248)'
   },
   // 기본 테마
   '전체': {

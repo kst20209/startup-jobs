@@ -12,7 +12,8 @@ const COMPANY_NAME_MAPPING: { [key: string]: string } = {
   '라인': '라인 (LINE)',
   '배민': '우아한형제들 (Woowahan)',
   '당근': '당근 (Carrot)',
-  '토스': '토스 (Toss)'
+  '토스': '토스 (Toss)',
+  '마이리얼트립': '마이리얼트립 (My Real Trip)'
 }
 
 interface CompanyButtonProps {
@@ -48,21 +49,34 @@ export default function CompanyButton({ company }: CompanyButtonProps) {
     companyStore.setSelectedCompany(actualCompanyName)
   }
 
+  // 마이리얼트립 특별 스타일
+  const isMyRealTrip = company.name === '마이리얼트립'
+  
   return (
     <button
       onClick={handleClick}
       className={`
         relative w-20 h-20 rounded-2xl transition-all duration-300 group z-[1]
+        ${isMyRealTrip 
+          ? 'bg-white border-2 border-gray-400 hover:border-gray-900' 
+          : ''
+        }
         ${isSelected 
-          ? 'ring-4 ring-offset-2 shadow-xl transform scale-105' 
-          : 'hover:shadow-lg hover:transform hover:scale-105'
+          ? isMyRealTrip
+            ? 'ring-4 ring-offset-2 shadow-xl transform scale-105 border-gray-900'
+            : 'ring-4 ring-offset-2 shadow-xl transform scale-105'
+          : isMyRealTrip
+            ? 'hover:shadow-lg hover:transform hover:scale-105'
+            : 'hover:shadow-lg hover:transform hover:scale-105'
         }
       `}
       style={{
-        backgroundColor: company.color,
-        boxShadow: isSelected 
+        backgroundColor: isMyRealTrip ? 'white' : company.color,
+        boxShadow: isSelected && !isMyRealTrip
           ? `0 8px 25px -5px ${company.color}40, 0 8px 10px -6px ${company.color}40`
-          : undefined
+          : isSelected && isMyRealTrip
+            ? '0 8px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)'
+            : undefined
       }}
       title={`${company.name} 채용공고 보기`}
     >
@@ -148,7 +162,7 @@ export function AllCompaniesButton() {
         relative w-20 h-20 rounded-2xl transition-all duration-300 group z-[1]
         ${isSelected 
           ? 'ring-4 ring-offset-2 shadow-xl transform scale-105 bg-[#5D5DF6]' 
-          : 'bg-gray-100 hover:bg-[#5D5DF6] hover:shadow-lg hover:transform hover:scale-105'
+          : 'bg-gray-100 border-2 border-[#bbbbff] hover:bg-[#5D5DF6] hover:shadow-lg hover:transform hover:scale-105'
         }
       `}
       style={{

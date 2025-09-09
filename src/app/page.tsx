@@ -78,6 +78,15 @@ const corporations = [
     objectFit: 'cover' as const,
     scale: 0.9 // 좀 더 작게 (원형 배경에 맞춤)
   },
+  { 
+    name: '마이리얼트립', 
+    color: '#FF6B35', 
+    logo: '/logos/myrealtrip.png',
+    logoStyle: 'with-bg' as const,
+    logoSize: { width: 48, height: 48 },
+    objectFit: 'contain' as const,
+    scale: 1.0 // 기본 크기
+  },
 ]
 
 export default async function HomePage() {
