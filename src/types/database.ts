@@ -63,8 +63,35 @@ export interface Database {
           created_at?: string
         }
       }
+      search_logs: {
+        Row: {
+          id: string
+          search_term: string
+          user_ip: string | null
+          user_agent: string | null
+          created_at: string | null
+          session_id: string | null
+        }
+        Insert: {
+          id?: string
+          search_term: string
+          user_ip?: string | null
+          user_agent?: string | null
+          created_at?: string | null
+          session_id?: string | null
+        }
+        Update: {
+          id?: string
+          search_term?: string
+          user_ip?: string | null
+          user_agent?: string | null
+          created_at?: string | null
+          session_id?: string | null
+        }
+      }
     }
   }
 }
 
 export type JobPost = Database['public']['Tables']['JobPost']['Row']
+export type SearchLog = Database['public']['Tables']['search_logs']['Row']
