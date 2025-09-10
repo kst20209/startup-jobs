@@ -7,7 +7,7 @@
 - `naver.svg` - 네이버 로고
 - `kakao.svg` - 카카오 로고  
 - `coupang.svg` - 쿠팡 로고
-- `line.svg` - 라인 로고
+- `line.png` - 라인 로고
 - `baemin.svg` - 배달의민족 로고
 - `daangn.svg` - 당근마켓 로고
 - `toss.svg` - 토스 로고

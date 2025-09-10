@@ -44,8 +44,8 @@ const corporations = [
   },
   { 
     name: '라인', 
-    color: '#3ACD01', 
-    logo: '/logos/line.svg',
+    color: '#00B900', 
+    logo: '/logos/line.png',
     logoStyle: 'no-bg' as const,
     logoSize: { width: 48, height: 48 },
     objectFit: 'contain' as const,
