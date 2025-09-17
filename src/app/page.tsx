@@ -218,31 +218,53 @@ export default async function HomePage() {
   )
 }
 
-// 빌드 시점에 모든 채용공고 데이터 가져오기 (SSG)
+// 빌드 시점에 모든 채용공고 데이터 가져오기 (SSG) - 페이지네이션으로 모든 데이터 가져오기
 async function getAllJobPosts(): Promise<JobPost[]> {
   try {
     console.log('🚀 빌드 시점에 모든 채용공고 데이터 가져오는 중...')
     
-    const { data: jobPosts, error } = await supabase
-      .from('JobPost')
-      .select('*')
-      .eq('is_active', true)
-      .order('created_at', { ascending: false })
+    let allJobPosts: JobPost[] = []
+    let page = 0
+    const pageSize = 1000
+    let hasMore = true
 
-    if (error) {
-      console.error('Error fetching all job posts:', error)
-      return []
+    while (hasMore) {
+      const { data: jobPosts, error } = await supabase
+        .from('JobPost')
+        .select('*')
+        .eq('is_active', true)
+        .order('created_at', { ascending: false })
+        .range(page * pageSize, (page + 1) * pageSize - 1)
+
+      if (error) {
+        console.error('Error fetching job posts:', error)
+        break
+      }
+
+      if (jobPosts && jobPosts.length > 0) {
+        allJobPosts = [...allJobPosts, ...jobPosts]
+        console.log(`📄 페이지 ${page + 1}: ${jobPosts.length}개 가져옴 (총 ${allJobPosts.length}개)`)
+        
+        // 1000개 미만이면 마지막 페이지
+        if (jobPosts.length < pageSize) {
+          hasMore = false
+        } else {
+          page++
+        }
+      } else {
+        hasMore = false
+      }
     }
 
-    console.log(`✅ 총 ${jobPosts?.length || 0}개의 채용공고를 빌드 시점에 가져왔습니다`)
+    console.log(`✅ 총 ${allJobPosts.length}개의 채용공고를 빌드 시점에 가져왔습니다`)
     
     // 디버깅: 실제 데이터베이스의 모든 company_name 출력
-    if (jobPosts && jobPosts.length > 0) {
-      const uniqueCompanies = [...new Set(jobPosts.map(post => post.company_name))].sort()
+    if (allJobPosts.length > 0) {
+      const uniqueCompanies = [...new Set(allJobPosts.map(post => post.company_name))].sort()
       console.log('🏢 DB에 있는 모든 company_name들:', uniqueCompanies)
     }
 
-    return jobPosts || []
+    return allJobPosts
   } catch (error) {
     console.error('Build time fetch error:', error)
     return []
