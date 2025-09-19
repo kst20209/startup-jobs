@@ -1,0 +1,21 @@
+name: Daily Revalidation
+
+on:
+  schedule:
+    # 매일 오전 9시 (UTC 기준) - 한국 시간 오전 9시는 UTC 00:00
+    - cron: '0 0 * * *'
+  workflow_dispatch: # 수동 실행도 가능
+
+jobs:
+  revalidate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Revalidate Homepage
+        run: |
+          curl -X POST "${{ secrets.SITE_URL }}/api/revalidate" \
+            -H "Authorization: Bearer ${{ secrets.REVALIDATE_TOKEN }}" \
+            -H "Content-Type: application/json"
+        
+      - name: Log Result
+        run: echo "홈페이지 재검증 요청이 완료되었습니다."

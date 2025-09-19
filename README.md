@@ -1,4 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 스타트업 채용공고 사이트
+
+이 프로젝트는 스타트업들의 채용공고를 모아서 보여주는 Next.js 웹사이트입니다.
+
+## 주요 기능
+
+- 매일 오전 9시 자동 데이터 업데이트
+- 기업별 채용공고 필터링
+- 검색 기능
+- 반응형 디자인
+
+## 데이터 업데이트 설정
+
+사이트는 매일 오전 9시에 자동으로 데이터를 업데이트합니다. 이는 GitHub Actions의 cron job을 통해 구현됩니다.
+
+### 환경 변수 설정
+
+`.env.local` 파일을 생성하고 다음 환경 변수들을 설정하세요:
+
+```env
+# Supabase 설정
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url_here
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key_here
+
+# 재검증 API 보안 토큰
+REVALIDATE_TOKEN=your_secure_random_token_here
+```
+
+### GitHub Secrets 설정
+
+GitHub 저장소의 Settings > Secrets and variables > Actions에서 다음 secrets를 설정하세요:
+
+- `SITE_URL`: 배포된 사이트의 URL (예: https://your-site.vercel.app)
+- `REVALIDATE_TOKEN`: 위에서 설정한 REVALIDATE_TOKEN과 동일한 값
 
 ## Getting Started
 

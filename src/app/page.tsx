@@ -10,8 +10,9 @@ import SearchInput from '@/components/SearchInput'
 import Image from 'next/image'
 import Link from 'next/link'
 
-// 24시간마다 revalidate (하루 한 번 데이터 업데이트)
-export const revalidate = 86400
+// On-demand revalidation을 사용하므로 더 긴 시간으로 설정
+// 매일 오전 9시에 API를 통해 수동으로 재검증됩니다
+export const revalidate = 3600 // 1시간마다 fallback revalidation
 
 // 기업 정보 (서버에서 정의)
 const corporations = [
